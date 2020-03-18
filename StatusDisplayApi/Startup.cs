@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using StatusDisplayApi.Interfaces;
+using StatusDisplayApi.Services;
 
 namespace StatusDisplayApi
 {
@@ -26,6 +28,7 @@ namespace StatusDisplayApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSingleton<IVK, VK>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
