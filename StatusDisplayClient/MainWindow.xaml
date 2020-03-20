@@ -1,12 +1,27 @@
-﻿<Window x:Class="StatusDisplayClient.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:StatusDisplayClient"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="StatusDisplayClient.MainWindow"
+        Background="#383838"
+        Title="StatusDisplayClient">
+  <Window.Styles>
+    <Style Selector="TextBlock">
+      <Setter Property="FontSize" Value="22"/>
+      <Setter Property = "Foreground" Value = "#E0E0E0" />
+    </Style>
+  </Window.Styles>
+  <Grid ColumnDefinitions="260,1.5*,4*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"  Margin="4">
+    <TextBlock Text="Температура" Grid.Row="0" Grid.Column="0"/>
+    <TextBlock Text="{Binding weatherModel.fact.temp}" Grid.Row="0" Grid.Column="1"/>
+    <TextBlock Text="Ощущается как" Grid.Row="1" Grid.Column="0"/>
+    <TextBlock Text="{Binding weatherModel.fact.feels_like}" Grid.Row="1" Grid.Column="1"/>
+    <TextBlock Text="Скорость ветра" Grid.Row="2" Grid.Column="0"/>
+    <TextBlock Text="{Binding weatherModel.fact.wind_speed}" Grid.Row="2" Grid.Column="1"/>
+    <TextBlock Text="Давление" Grid.Row="3" Grid.Column="0"/>
+    <TextBlock Text="{Binding weatherModel.fact.pressure_mm}" Grid.Row="3" Grid.Column="1"/>
+    <TextBlock Text="Влажность воздуха" Grid.Row="4" Grid.Column="0"/>
+    <TextBlock Text="{Binding weatherModel.fact.humidity}" Grid.Row="4" Grid.Column="1"/>
+  </Grid>
 </Window>

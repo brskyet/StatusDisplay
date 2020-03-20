@@ -12,17 +12,24 @@ namespace StatusDisplayApi.Controllers
     [ApiController]
     public class DataController : ControllerBase
     {
-        private readonly IVK _VK;
+        private readonly IWeather _Weather;
 
-        public DataController(IVK VK)
+        public DataController(IWeather weather)
         {
-            _VK = VK;
+            _Weather = weather;
         }
 
-        [HttpGet("test")]
-        public IActionResult Test()
+        [HttpGet("GetForecast")]
+        public IActionResult GetForecast()
         {
-            return Ok(_VK.test().ToString());
+            try
+            {
+                return Ok(_Weather.GetForecast());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
