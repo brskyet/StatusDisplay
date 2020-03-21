@@ -14,14 +14,14 @@
   </Window.Styles>
   <Grid ColumnDefinitions="260,1.5*,4*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"  Margin="4">
     <TextBlock Text="Температура" Grid.Row="0" Grid.Column="0"/>
-    <TextBlock Text="{Binding weatherModel.fact.temp}" Grid.Row="0" Grid.Column="1"/>
+    <TextBlock Text="{Binding WeatherModel.fact.temp}" Grid.Row="0" Grid.Column="1"/>
     <TextBlock Text="Ощущается как" Grid.Row="1" Grid.Column="0"/>
-    <TextBlock Text="{Binding weatherModel.fact.feels_like}" Grid.Row="1" Grid.Column="1"/>
+    <TextBlock Text="{Binding WeatherModel.fact.feels_like}" Grid.Row="1" Grid.Column="1"/>
     <TextBlock Text="Скорость ветра" Grid.Row="2" Grid.Column="0"/>
-    <TextBlock Text="{Binding weatherModel.fact.wind_speed}" Grid.Row="2" Grid.Column="1"/>
+    <TextBlock Text="{Binding WeatherModel.fact.wind_speed}" Grid.Row="2" Grid.Column="1"/>
     <TextBlock Text="Давление" Grid.Row="3" Grid.Column="0"/>
-    <TextBlock Text="{Binding weatherModel.fact.pressure_mm}" Grid.Row="3" Grid.Column="1"/>
+    <TextBlock Text="{Binding WeatherModel.fact.pressure_mm}" Grid.Row="3" Grid.Column="1"/>
     <TextBlock Text="Влажность воздуха" Grid.Row="4" Grid.Column="0"/>
-    <TextBlock Text="{Binding weatherModel.fact.humidity}" Grid.Row="4" Grid.Column="1"/>
+    <TextBlock Text="{Binding WeatherModel.fact.humidity}" Grid.Row="4" Grid.Column="1"/>
   </Grid>
 </Window>
