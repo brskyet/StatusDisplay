@@ -6,6 +6,7 @@ namespace StatusDisplayClient.Models
 {
     public class WeatherModel
     {
+        public string Status { get; set; }
         public Fact fact { get; set; }
     }
 

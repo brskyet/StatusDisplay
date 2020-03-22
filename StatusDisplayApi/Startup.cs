@@ -29,6 +29,7 @@ namespace StatusDisplayApi
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton<IWeather, Weather>();
+            services.AddSingleton<IToDoList, ToDoList>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

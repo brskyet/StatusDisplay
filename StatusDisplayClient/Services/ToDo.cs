@@ -8,18 +8,18 @@ using System.Text;
 
 namespace StatusDisplayClient.Services
 {
-    static class Forecast
+    static class ToDo
     {
-        static public WeatherModel GetForecast()
+        static public List<ToDoListItem> GetToDoList()
         {
-            WebRequest request = WebRequest.Create("https://localhost:5001/api/Data/GetForecast");
+            WebRequest request = WebRequest.Create("https://localhost:5001/api/Data/GetToDoList");
             WebResponse response = request.GetResponse();
-            WeatherModel result;
+            List<ToDoListItem> result;
             using (Stream dataStream = response.GetResponseStream())
             {
                 StreamReader reader = new StreamReader(dataStream);
                 string json = reader.ReadToEnd();
-                result = JsonConvert.DeserializeObject<WeatherModel>(json);
+                result = JsonConvert.DeserializeObject<List<ToDoListItem>>(json);
             }
             response.Close();
             return result;

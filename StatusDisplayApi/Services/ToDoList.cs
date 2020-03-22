@@ -6,33 +6,32 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace StatusDisplayApi.Services
 {
-    public class Weather : IWeather
+    public class ToDoList : IToDoList
     {
         private readonly ConfigJson config_json;
         private const string path = @"config.json";
 
-        public Weather()
+        public ToDoList()
         {
             string config = File.ReadAllText(path);
             config_json = JsonConvert.DeserializeObject<ConfigJson>(config);
         }
 
-        public WeatherModel GetForecast()
+        public List<ToDoListModel> GetToDoList()
         {
-            WebRequest request = WebRequest.Create($"https://api.weather.yandex.ru/v1/informers?lat={config_json.yandex_weather_lat}&lon={config_json.yandex_weather_lon}&lang=en_US");
-            request.Headers.Add($"X-Yandex-API-Key: {config_json.yandex_weather_key}");
+            WebRequest request = WebRequest.Create(
+                $"https://api.trello.com/1/lists/{config_json.trello_list_id}/cards?key={config_json.trello_dev_key}&token={config_json.trello_user_key}");
             WebResponse response = request.GetResponse();
-            WeatherModel result;
+            List<ToDoListModel> result;
             using (Stream dataStream = response.GetResponseStream())
             {
                 StreamReader reader = new StreamReader(dataStream);
                 string json = reader.ReadToEnd();
-                result = JsonConvert.DeserializeObject<WeatherModel>(json);
+                result = JsonConvert.DeserializeObject<List<ToDoListModel>>(json);
             }
             response.Close();
 

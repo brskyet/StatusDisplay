@@ -11,8 +11,7 @@ namespace StatusDisplayClient
         public MainWindow()
         {
             InitializeComponent();
-            var forecast = new Forecast();
-            DataContext = new WeatherViewModel(forecast);
+            DataContext = new MainWindowViewModel();
 #if DEBUG
             this.AttachDevTools();
 #endif

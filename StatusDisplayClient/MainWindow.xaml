@@ -12,16 +12,35 @@
       <Setter Property = "Foreground" Value = "#E0E0E0" />
     </Style>
   </Window.Styles>
-  <Grid ColumnDefinitions="260,1.5*,4*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"  Margin="4">
-    <TextBlock Text="Температура" Grid.Row="0" Grid.Column="0"/>
-    <TextBlock Text="{Binding WeatherModel.fact.temp}" Grid.Row="0" Grid.Column="1"/>
-    <TextBlock Text="Ощущается как" Grid.Row="1" Grid.Column="0"/>
-    <TextBlock Text="{Binding WeatherModel.fact.feels_like}" Grid.Row="1" Grid.Column="1"/>
-    <TextBlock Text="Скорость ветра" Grid.Row="2" Grid.Column="0"/>
-    <TextBlock Text="{Binding WeatherModel.fact.wind_speed}" Grid.Row="2" Grid.Column="1"/>
-    <TextBlock Text="Давление" Grid.Row="3" Grid.Column="0"/>
-    <TextBlock Text="{Binding WeatherModel.fact.pressure_mm}" Grid.Row="3" Grid.Column="1"/>
-    <TextBlock Text="Влажность воздуха" Grid.Row="4" Grid.Column="0"/>
-    <TextBlock Text="{Binding WeatherModel.fact.humidity}" Grid.Row="4" Grid.Column="1"/>
+  <Grid ColumnDefinitions="350, 450" RowDefinitions="225,225"  Margin="4">
+    <StackPanel Grid.Row="0" Grid.Column="0">
+    </StackPanel>
+    <StackPanel Grid.Row="1" Grid.Column="0">
+      <TextBlock Text="{Binding WeatherModel.Status}"/>
+      <Grid ColumnDefinitions="250,100" RowDefinitions="Auto,Auto,Auto,Auto,Auto" Margin="4">
+        <TextBlock Text="Температура" Grid.Row="0" Grid.Column="0"/>
+        <TextBlock Text="{Binding WeatherModel.fact.temp}" Grid.Row="0" Grid.Column="1"/>
+        <TextBlock Text="Ощущается как" Grid.Row="1" Grid.Column="0"/>
+        <TextBlock Text="{Binding WeatherModel.fact.feels_like}" Grid.Row="1" Grid.Column="1"/>
+        <TextBlock Text="Скорость ветра" Grid.Row="2" Grid.Column="0"/>
+        <TextBlock Text="{Binding WeatherModel.fact.wind_speed}" Grid.Row="2" Grid.Column="1"/>
+        <TextBlock Text="Давление" Grid.Row="3" Grid.Column="0"/>
+        <TextBlock Text="{Binding WeatherModel.fact.pressure_mm}" Grid.Row="3" Grid.Column="1"/>
+        <TextBlock Text="Влажность воздуха" Grid.Row="4" Grid.Column="0"/>
+        <TextBlock Text="{Binding WeatherModel.fact.humidity}" Grid.Row="4" Grid.Column="1"/>
+      </Grid>
+    </StackPanel>
+    <StackPanel Grid.Row="0" Grid.Column="1">
+      <TextBlock Text="{Binding ToDoListModel.Status}" Margin="150,20,0,0"/>
+      <ItemsControl Items="{Binding ToDoListModel.toDoListItems}" Margin="40,10,0,0">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding name}"/>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
+    <StackPanel Grid.Row="1" Grid.Column="1">
+    </StackPanel>
   </Grid>
 </Window>

@@ -13,10 +13,12 @@ namespace StatusDisplayApi.Controllers
     public class DataController : ControllerBase
     {
         private readonly IWeather _Weather;
+        private readonly IToDoList _ToDoList;
 
-        public DataController(IWeather weather)
+        public DataController(IWeather weather, IToDoList toDoList)
         {
             _Weather = weather;
+            _ToDoList = toDoList;
         }
 
         [HttpGet("GetForecast")]
@@ -25,6 +27,19 @@ namespace StatusDisplayApi.Controllers
             try
             {
                 return Ok(_Weather.GetForecast());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetToDoList")]
+        public IActionResult GetToDoList()
+        {
+            try
+            {
+                return Ok(_ToDoList.GetToDoList());
             }
             catch (Exception ex)
             {

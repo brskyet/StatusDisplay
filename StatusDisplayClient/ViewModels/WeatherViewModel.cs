@@ -10,10 +10,9 @@ using System.Timers;
 
 namespace StatusDisplayClient.ViewModels
 {
-    class WeatherViewModel : INotifyPropertyChanged
+    class MainWindowViewModel : INotifyPropertyChanged
     {
         private WeatherModel weatherModel;
-
         public WeatherModel WeatherModel
         {
             get { return weatherModel; }
@@ -27,50 +26,98 @@ namespace StatusDisplayClient.ViewModels
             }
         }
 
+        private ToDoListModel toDoListModel;
+        public ToDoListModel ToDoListModel
+        {
+            get { return toDoListModel; }
+            set
+            {
+                if (value != toDoListModel)
+                {
+                    toDoListModel = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private readonly Forecast _forecast;
-        private DispatcherTimer timer;
+        private readonly DispatcherTimer timerForecast, timerToDo;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public WeatherViewModel(Forecast forecast)
+        public MainWindowViewModel()
         {
-            _forecast = forecast;
             WeatherModel = new WeatherModel
             {
-                fact = new Fact 
-                { 
-                    temp = "Loading...", feels_like = "Loading...", humidity = "Loading...", pressure_mm = "Loading...", wind_speed = "Loading..." 
+                Status = "Weather forecast",
+                fact = new Fact
+                {
+                    temp = "Loading...",
+                    feels_like = "Loading...",
+                    humidity = "Loading...",
+                    pressure_mm = "Loading...",
+                    wind_speed = "Loading..."
                 }
             };
-            timer = new DispatcherTimer
+
+            ToDoListModel = new ToDoListModel
+            {
+                Status = "To do list",
+                toDoListItems = new List<ToDoListItem>()
+            };
+
+            timerForecast = new DispatcherTimer
             {
                 Interval = TimeSpan.FromHours(1)
             };
-            timer.Tick += OnTimedEvent;
-            timer.Start();
-            OnTimedEvent();
+            timerForecast.Tick += OnTimedEventForecast;
+            timerForecast.Start();
+
+            timerToDo = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(5)
+            };
+            timerToDo.Tick += OnTimedEventToDoList;
+            timerToDo.Start();
+            OnTimedEventForecast();
+            OnTimedEventToDoList();
         }
 
-        private void OnTimedEvent(object sender = null, EventArgs e = null)
+        private void OnTimedEventForecast(object sender = null, EventArgs e = null)
         {
             try
             {
-                var model = _forecast.GetForecast();
+                var model = Forecast.GetForecast();
                 model.fact.temp += "°";
                 model.fact.feels_like += "°";
                 model.fact.wind_speed += " м/с";
                 model.fact.pressure_mm += " мм рт.ст.";
                 model.fact.humidity += "%";
-                weatherModel = model;
+                WeatherModel = model;
             }
             catch
             {
-                weatherModel = new WeatherModel { fact = new Fact { temp = "Error!" } };
+                var model = new WeatherModel { Status = "Weather forecast: an error occurred", fact = WeatherModel.fact };
+                WeatherModel = model;
+            }
+        }
+
+        private void OnTimedEventToDoList(object sender = null, EventArgs e = null)
+        {
+            try
+            {
+                var toDoListItems = ToDo.GetToDoList();
+                var model = new ToDoListModel { Status = "To do list", toDoListItems = toDoListItems };
+                ToDoListModel = model;
+            }
+            catch
+            {
+                var model = new ToDoListModel { Status = "To do list: an error occurred", toDoListItems = ToDoListModel.toDoListItems };
+                ToDoListModel = model;
             }
         }
     }
