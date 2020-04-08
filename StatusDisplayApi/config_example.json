@@ -1,0 +1,9 @@
+# This json must be renamed to "config.json"! And values must be filled.
+{
+	yandex_weather_key: "",
+	yandex_weather_lat: "",
+	yandex_weather_lon: "",
+	trello_dev_key: "",
+	trello_user_key: "",
+	trello_list_id: "",
+}

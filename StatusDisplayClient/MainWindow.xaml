@@ -2,21 +2,37 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+        xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="StatusDisplayClient.MainWindow"
         Background="#383838"
         Title="StatusDisplayClient">
   <Window.Styles>
+    <Style Selector="ListBox">
+      <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+      <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+      <Setter Property="Height" Value="45"/>
+      <Setter Property="Width" Value="45"/>
+      <Setter Property="Margin" Value="5,0,5,0"/>
+    </Style>
     <Style Selector="TextBlock">
       <Setter Property="FontSize" Value="22"/>
       <Setter Property = "Foreground" Value = "#E0E0E0" />
     </Style>
+    <Style Selector="TextBlock.Time">
+      <Setter Property="FontSize" Value="60"/>
+    </Style>
+    <Style Selector="TextBox">
+      <Setter Property="FontSize" Value="20"/>
+    </Style>
   </Window.Styles>
-  <Grid ColumnDefinitions="350, 450" RowDefinitions="225,225"  Margin="4">
+  <Grid ColumnDefinitions="400, 400" RowDefinitions="300,150"  Margin="4">
+    
     <StackPanel Grid.Row="0" Grid.Column="0">
-    </StackPanel>
-    <StackPanel Grid.Row="1" Grid.Column="0">
-      <TextBlock Text="{Binding WeatherModel.Status}"/>
+      <TextBlock Text="{Binding DateTimeModel.Time}" Classes="Time"/>
+      <TextBlock Text="{Binding DateTimeModel.Date}"/>
+      <TextBlock Text="{Binding WeatherModel.Status}" Margin="5,20,0,0"/>
       <Grid ColumnDefinitions="250,100" RowDefinitions="Auto,Auto,Auto,Auto,Auto" Margin="4">
         <TextBlock Text="Температура" Grid.Row="0" Grid.Column="0"/>
         <TextBlock Text="{Binding WeatherModel.fact.temp}" Grid.Row="0" Grid.Column="1"/>
@@ -30,9 +46,49 @@
         <TextBlock Text="{Binding WeatherModel.fact.humidity}" Grid.Row="4" Grid.Column="1"/>
       </Grid>
     </StackPanel>
+    
+    <StackPanel Grid.Row="1" Grid.Column="0"  Margin="0,40,0,0"  Width="400">
+      <StackPanel Orientation="Horizontal" Margin="10,0,0,0" Width="400">
+        <TextBox Text="{Binding TimerModel.Hours}" Width="40" x:Name="HoursField">
+          <i:Interaction.Behaviors>
+            <ia:EventTriggerBehavior EventName="PointerWheelChanged" SourceObject="{Binding #HoursField}">
+              <ia:CallMethodAction TargetObject="{Binding}" MethodName="HoursScroll" />
+            </ia:EventTriggerBehavior>
+          </i:Interaction.Behaviors>
+        </TextBox>
+        <TextBlock Text=" ч " VerticalAlignment="Bottom"/>
+
+        <TextBox Text="{Binding TimerModel.Minutes}" Width="40" x:Name="MinutesField">
+          <i:Interaction.Behaviors>
+            <ia:EventTriggerBehavior EventName="PointerWheelChanged" SourceObject="{Binding #MinutesField}">
+              <ia:CallMethodAction TargetObject="{Binding}" MethodName="MinutesScroll" />
+            </ia:EventTriggerBehavior>
+          </i:Interaction.Behaviors>
+        </TextBox>
+        <TextBlock Text=" мин " VerticalAlignment="Bottom"/>
+
+        <TextBox Text="{Binding TimerModel.Seconds}" Width="40" x:Name="SecondsField">
+          <i:Interaction.Behaviors>
+            <ia:EventTriggerBehavior EventName="PointerWheelChanged" SourceObject="{Binding #SecondsField}">
+              <ia:CallMethodAction TargetObject="{Binding}" MethodName="SecondsScroll" />
+            </ia:EventTriggerBehavior>
+          </i:Interaction.Behaviors>
+        </TextBox>
+        <TextBlock Text=" с" VerticalAlignment="Bottom"/>
+      </StackPanel>
+      
+      <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+        <Button Content="Отмена" Margin="10,0,0,0" Width="100" Background="#1E1E1E" 
+                IsEnabled="{Binding ButtonStatModel.IsTimerStarted}" Command="{Binding OnCancelButton}"/>
+        <Button Content="{Binding ButtonStatModel.Text}" Margin="10,0,0,0"  
+                Width="100" Background="#1E1E1E"
+                Command="{Binding OnStartButton}" x:Name="StartButton"/>
+      </StackPanel>
+    </StackPanel>
+    
     <StackPanel Grid.Row="0" Grid.Column="1">
-      <TextBlock Text="{Binding ToDoListModel.Status}" Margin="150,20,0,0"/>
-      <ItemsControl Items="{Binding ToDoListModel.toDoListItems}" Margin="40,10,0,0">
+      <TextBlock Text="{Binding ToDoListModel.Status}" Margin="50,20,0,0"/>
+      <ItemsControl Items="{Binding ToDoListModel.toDoListItems}" Margin="30,10,0,0">
         <ItemsControl.ItemTemplate>
           <DataTemplate>
             <TextBlock Text="{Binding name}"/>
@@ -40,7 +96,8 @@
         </ItemsControl.ItemTemplate>
       </ItemsControl>
     </StackPanel>
-    <StackPanel Grid.Row="1" Grid.Column="1">
+    
+    <StackPanel Grid.Row="1" Grid.Column="1" >
     </StackPanel>
   </Grid>
 </Window>
