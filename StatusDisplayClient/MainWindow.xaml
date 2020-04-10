@@ -6,7 +6,7 @@
         xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="StatusDisplayClient.MainWindow"
-        Background="#383838"
+        Background="{Binding BackgroundColor}"
         Title="StatusDisplayClient">
   <Window.Styles>
     <Style Selector="ListBox">
@@ -25,6 +25,10 @@
     </Style>
     <Style Selector="TextBox">
       <Setter Property="FontSize" Value="20"/>
+    </Style>
+    <Style Selector="Button.StartCancel /template/ ContentPresenter">
+      <Setter Property="CornerRadius" Value="20"/>
+      <Setter Property="BorderThickness" Value="0"/>
     </Style>
   </Window.Styles>
   <Grid ColumnDefinitions="400, 400" RowDefinitions="300,150"  Margin="4">
@@ -78,11 +82,14 @@
       </StackPanel>
       
       <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
-        <Button Content="Отмена" Margin="10,0,0,0" Width="100" Background="#1E1E1E" 
-                IsEnabled="{Binding ButtonStatModel.IsTimerStarted}" Command="{Binding OnCancelButton}"/>
-        <Button Content="{Binding ButtonStatModel.Text}" Margin="10,0,0,0"  
-                Width="100" Background="#1E1E1E"
-                Command="{Binding OnStartButton}" x:Name="StartButton"/>
+        <Button Content="Отмена" Margin="10,0,0,0" Width="100" Background="#1E1E1E"
+                IsEnabled="{Binding ButtonStatModel.IsTimerStarted}" Command="{Binding OnCancelButton}"
+                Classes="StartCancel"/>
+        <Button Margin="10,0,0,0" Classes="StartCancel"
+                Width="100" Background="{Binding ButtonStatModel.ButtonColor}"
+                Command="{Binding OnStartButton}" x:Name="StartButton">
+          <TextBlock Text="{Binding ButtonStatModel.Text}" Foreground="{Binding ButtonStatModel.TextColor}"/>
+        </Button>
       </StackPanel>
     </StackPanel>
     

@@ -1,5 +1,7 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Threading;
+using Avalonia.ReactiveUI;
 using StatusDisplayClient.Models;
 using StatusDisplayClient.Services;
 using System;
@@ -9,8 +11,11 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using CSCore.SoundOut;
+using System.IO;
 
 namespace StatusDisplayClient.ViewModels
 {
@@ -86,15 +91,31 @@ namespace StatusDisplayClient.ViewModels
             }
         }
 
+        private IBrush backgroundColor;
+        public IBrush BackgroundColor
+        {
+            get { return backgroundColor; }
+            set
+            {
+                if (value != backgroundColor)
+                {
+                    backgroundColor = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private TimeSpan timer;
         private int timerHours, timerMinutes, timerSeconds;
+
+        private int displayFlash;
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private  DispatcherTimer timerForecast, timerToDo, timerTime, timerTimer;
+        private DispatcherTimer timerForecast, timerToDo, timerTime, timerTimer, timerFlash;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -131,8 +152,11 @@ namespace StatusDisplayClient.ViewModels
                 IsTimerStarted = false,
                 IsTimerTicking = false,
                 Text = "Старт",
-                Color = new Avalonia.Media.Color(1, 61, 40 ,9)
+                ButtonColor = SolidColorBrush.Parse("#1A361F"),
+                TextColor = SolidColorBrush.Parse("#56D45B")
             };
+
+            BackgroundColor = SolidColorBrush.Parse("#383838");
 
             timerForecast = new DispatcherTimer
             {
@@ -157,9 +181,15 @@ namespace StatusDisplayClient.ViewModels
 
             timerTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromSeconds(1), IsEnabled = false
+                Interval = TimeSpan.FromSeconds(1)
             };
             timerTimer.Tick += OnTimedEventTimer;
+
+            timerFlash = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(250)
+            };
+            timerFlash.Tick += OnTimedEventFlash;
 
             OnTimedEventForecast();
             OnTimedEventToDoList();
@@ -168,7 +198,7 @@ namespace StatusDisplayClient.ViewModels
 
         private void OnTimedEventTimer(object sender = null, EventArgs e = null)
         {
-            if(timer.TotalSeconds > 0)
+            if (timer.TotalSeconds > 0)
             {
                 timer -= new TimeSpan(0, 0, 1);
                 TimerModel = new TimerModel { Hours = timer.Hours, Minutes = timer.Minutes, Seconds = timer.Seconds };
@@ -176,6 +206,7 @@ namespace StatusDisplayClient.ViewModels
             else
             {
                 OnCancelButton();
+                timerFlash.Start();
             }
         }
 
@@ -271,9 +302,9 @@ namespace StatusDisplayClient.ViewModels
         {
             if (TimerModel.Hours == 0 && TimerModel.Minutes == 0 && TimerModel.Seconds == 0)
                 return;
-            if(ButtonStatModel.IsTimerStarted == false)
+            if (ButtonStatModel.IsTimerStarted == false)
             {
-                ButtonStatModel = new ButtonStatModel { IsTimerStarted = true, IsTimerTicking = true, Text = "Пауза", Color = new Avalonia.Media.Color(1, 26, 54, 31) };
+                ButtonStatModel = new ButtonStatModel { IsTimerStarted = true, IsTimerTicking = true, Text = "Пауза", ButtonColor = SolidColorBrush.Parse("#3D2809"), TextColor = SolidColorBrush.Parse("#D67E00") };
                 timerHours = TimerModel.Hours;
                 timerMinutes = TimerModel.Minutes;
                 timerSeconds = TimerModel.Seconds;
@@ -282,15 +313,15 @@ namespace StatusDisplayClient.ViewModels
             }
             else
             {
-                if(ButtonStatModel.IsTimerTicking == true)
+                if (ButtonStatModel.IsTimerTicking == true)
                 {
                     timerTimer.Stop();
-                    ButtonStatModel = new ButtonStatModel { IsTimerStarted = true, IsTimerTicking = false, Text = "Дальше", Color = new Avalonia.Media.Color(1, 61, 40, 9) };
+                    ButtonStatModel = new ButtonStatModel { IsTimerStarted = true, IsTimerTicking = false, Text = "Дальше", ButtonColor = SolidColorBrush.Parse("#1A361F"), TextColor = SolidColorBrush.Parse("#56D45B") };
                 }
                 else
                 {
                     timerTimer.Start();
-                    ButtonStatModel = new ButtonStatModel { IsTimerStarted = true, IsTimerTicking = true, Text = "Пауза", Color = new Avalonia.Media.Color(1, 26, 54, 31) };
+                    ButtonStatModel = new ButtonStatModel { IsTimerStarted = true, IsTimerTicking = true, Text = "Пауза", ButtonColor = SolidColorBrush.Parse("#3D2809"), TextColor = SolidColorBrush.Parse("#D67E00") };
                 }
             }
         }
@@ -298,8 +329,23 @@ namespace StatusDisplayClient.ViewModels
         public void OnCancelButton()
         {
             timerTimer.Stop();
-            ButtonStatModel = new ButtonStatModel { IsTimerStarted = false, IsTimerTicking = false, Text = "Старт", Color = new Avalonia.Media.Color(1, 61, 40, 9) };
+            ButtonStatModel = new ButtonStatModel { IsTimerStarted = false, IsTimerTicking = false, Text = "Старт", ButtonColor = SolidColorBrush.Parse("#1A361F"), TextColor = SolidColorBrush.Parse("#56D45B") };
             TimerModel = new TimerModel { Hours = timerHours, Minutes = timerMinutes, Seconds = timerSeconds };
+        }
+
+        private void OnTimedEventFlash(object sender, EventArgs e)
+        {
+            // TODO: make avalonia animation instead this method
+            if(displayFlash % 2 == 0)
+                BackgroundColor = SolidColorBrush.Parse("#320100");
+            else
+                BackgroundColor = SolidColorBrush.Parse("#383838");
+            displayFlash++;
+            if(displayFlash >= 12)
+            {
+                displayFlash = 0;
+                timerFlash.Stop();
+            }
         }
     }
 }
