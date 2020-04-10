@@ -91,15 +91,15 @@ namespace StatusDisplayClient.ViewModels
             }
         }
 
-        private IBrush backgroundColor;
-        public IBrush BackgroundColor
+        private WidgetColor widgetColor;
+        public WidgetColor WidgetColor
         {
-            get { return backgroundColor; }
+            get { return widgetColor; }
             set
             {
-                if (value != backgroundColor)
+                if (value != widgetColor)
                 {
-                    backgroundColor = value;
+                    widgetColor = value;
                     OnPropertyChanged();
                 }
             }
@@ -144,7 +144,7 @@ namespace StatusDisplayClient.ViewModels
             {
                 Hours = 0,
                 Minutes = 0,
-                Seconds = 0
+                Seconds = 1
             };
 
             ButtonStatModel = new ButtonStatModel
@@ -156,7 +156,15 @@ namespace StatusDisplayClient.ViewModels
                 TextColor = SolidColorBrush.Parse("#56D45B")
             };
 
-            BackgroundColor = SolidColorBrush.Parse("#383838");
+            WidgetColor = new WidgetColor
+            {
+                TimeColor = SolidColorBrush.Parse("#505356"),
+                WeatherColor = SolidColorBrush.Parse("#3F4041"),
+                TimerColor = SolidColorBrush.Parse("#282828"),
+                TodoListColor = SolidColorBrush.Parse("#252328"),
+                NewsColor = SolidColorBrush.Parse("#4E4C48"),
+                EngWordColor = SolidColorBrush.Parse("#393E41")
+            };
 
             timerForecast = new DispatcherTimer
             {
@@ -336,10 +344,26 @@ namespace StatusDisplayClient.ViewModels
         private void OnTimedEventFlash(object sender, EventArgs e)
         {
             // TODO: make avalonia animation instead this method
-            if(displayFlash % 2 == 0)
-                BackgroundColor = SolidColorBrush.Parse("#320100");
+            if (displayFlash % 2 == 0)
+                WidgetColor = new WidgetColor
+                {
+                    TimeColor = SolidColorBrush.Parse("#320100"),
+                    WeatherColor = SolidColorBrush.Parse("#320100"),
+                    TimerColor = SolidColorBrush.Parse("#320100"),
+                    TodoListColor = SolidColorBrush.Parse("#320100"),
+                    NewsColor = SolidColorBrush.Parse("#320100"),
+                    EngWordColor = SolidColorBrush.Parse("#320100")
+                };
             else
-                BackgroundColor = SolidColorBrush.Parse("#383838");
+                WidgetColor = new WidgetColor
+                {
+                    TimeColor = SolidColorBrush.Parse("#505356"),
+                    WeatherColor = SolidColorBrush.Parse("#3F4041"),
+                    TimerColor = SolidColorBrush.Parse("#282828"),
+                    TodoListColor = SolidColorBrush.Parse("#252328"),
+                    NewsColor = SolidColorBrush.Parse("#4E4C48"),
+                    EngWordColor = SolidColorBrush.Parse("#393E41")
+                };
             displayFlash++;
             if(displayFlash >= 12)
             {
