@@ -7,7 +7,10 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="StatusDisplayClient.MainWindow"
         Background="{Binding BackgroundColor}"
-        Title="StatusDisplayClient">
+        Title="StatusDisplayClient"
+        HasSystemDecorations="False"
+        WindowState="Maximized"
+        Topmost="True">
   <Window.Styles>
     <Style Selector="ListBox">
       <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
