@@ -14,7 +14,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
-using CSCore.SoundOut;
 using System.IO;
 
 namespace StatusDisplayClient.ViewModels
@@ -105,6 +104,34 @@ namespace StatusDisplayClient.ViewModels
             }
         }
 
+        private EngTranslatedWordModel engTranslatedWordModel;
+        public EngTranslatedWordModel EngTranslatedWordModel
+        {
+            get { return engTranslatedWordModel; }
+            set
+            {
+                if (value != engTranslatedWordModel)
+                {
+                    engTranslatedWordModel = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private NewsModel newsModel;
+        public NewsModel NewsModel
+        {
+            get { return newsModel; }
+            set
+            {
+                if (value != newsModel)
+                {
+                    newsModel = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private TimeSpan timer;
         private int timerHours, timerMinutes, timerSeconds;
 
@@ -115,7 +142,7 @@ namespace StatusDisplayClient.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private DispatcherTimer timerForecast, timerToDo, timerTime, timerTimer, timerFlash;
+        private DispatcherTimer timerForecast, timerToDo, timerTime, timerTimer, timerFlash, timerEngWord, timerNews;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -144,7 +171,7 @@ namespace StatusDisplayClient.ViewModels
             {
                 Hours = 0,
                 Minutes = 0,
-                Seconds = 1
+                Seconds = 0
             };
 
             ButtonStatModel = new ButtonStatModel
@@ -164,6 +191,11 @@ namespace StatusDisplayClient.ViewModels
                 TodoListColor = SolidColorBrush.Parse("#252328"),
                 NewsColor = SolidColorBrush.Parse("#4E4C48"),
                 EngWordColor = SolidColorBrush.Parse("#393E41")
+            };
+
+            EngTranslatedWordModel = new EngTranslatedWordModel
+            {
+                Status = "Word of the day is loading..."
             };
 
             timerForecast = new DispatcherTimer
@@ -199,9 +231,35 @@ namespace StatusDisplayClient.ViewModels
             };
             timerFlash.Tick += OnTimedEventFlash;
 
+            timerEngWord = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+            timerEngWord.Tick += OnTimedEventEngWord;
+
             OnTimedEventForecast();
             OnTimedEventToDoList();
             OnTimedEventTime();
+            OnTimedEventEngWord();
+        }
+
+        private async void OnTimedEventEngWord(object sender = null, EventArgs e = null)
+        {
+            if(sender == null || ("T: {0:T}", DateTime.Now) == ("T: {0:T}", new DateTime(2008, 6, 1, 0, 0, 0)))
+            {
+                try
+                {
+                    var model = await Task.Run(EngWord.GetEngWord);
+                    model.Status = "Word of the day: ";
+                    EngTranslatedWordModel = model;
+                }
+                catch
+                {
+                    var model = EngTranslatedWordModel;
+                    model.Status = "Word of the day: an error was occurred: ";
+                    EngTranslatedWordModel = model;
+                }
+            }
         }
 
         private void OnTimedEventTimer(object sender = null, EventArgs e = null)
@@ -232,7 +290,7 @@ namespace StatusDisplayClient.ViewModels
             }
             catch
             {
-                var model = new WeatherModel { Status = "Weather forecast: an error occurred", fact = WeatherModel.fact };
+                var model = new WeatherModel { Status = "Weather forecast: an error was occurred", fact = WeatherModel.fact };
                 WeatherModel = model;
             }
         }
@@ -247,7 +305,7 @@ namespace StatusDisplayClient.ViewModels
             }
             catch
             {
-                var model = new ToDoListModel { Status = "To-do list: an error occurred", toDoListItems = ToDoListModel.toDoListItems };
+                var model = new ToDoListModel { Status = "To-do list: an error was occurred", toDoListItems = ToDoListModel.toDoListItems };
                 ToDoListModel = model;
             }
         }
@@ -262,7 +320,7 @@ namespace StatusDisplayClient.ViewModels
             }
             catch
             {
-                var model = new DateTimeModel { Date = "An error occurred", Time = "" };
+                var model = new DateTimeModel { Date = "An error was occurred", Time = "" };
                 DateTimeModel = model;
             }
         }
@@ -339,6 +397,12 @@ namespace StatusDisplayClient.ViewModels
             timerTimer.Stop();
             ButtonStatModel = new ButtonStatModel { IsTimerStarted = false, IsTimerTicking = false, Text = "Старт", ButtonColor = SolidColorBrush.Parse("#1A361F"), TextColor = SolidColorBrush.Parse("#56D45B") };
             TimerModel = new TimerModel { Hours = timerHours, Minutes = timerMinutes, Seconds = timerSeconds };
+        }
+
+        public void OnEngWordClicked()
+        {
+            EngWordExtended window = new EngWordExtended(EngTranslatedWordModel);
+            window.Show();
         }
 
         private void OnTimedEventFlash(object sender, EventArgs e)

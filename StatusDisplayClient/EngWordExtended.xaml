@@ -1,0 +1,141 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="StatusDisplayClient.EngWordExtended"
+        Title="EngWordExtended"
+        Background="#393E41"
+        HasSystemDecorations="False"
+        WindowState="Maximized"
+        Topmost="True">
+  <Window.Styles>
+    <Style Selector="TextBlock">
+      <Setter Property = "Foreground" Value = "#D1CBD9" />
+    </Style>
+    <Style Selector="TextBlock.EngWord">
+      <Setter Property="FontSize" Value="20"/>
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+      <Setter Property="VerticalAlignment" Value="Top"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
+      <Setter Property = "Width" Value = "370" />
+      <Setter Property = "Margin" Value = "10,0,10,0" />
+    </Style>
+    <Style Selector="TextBlock.Numerator">
+      <Setter Property="FontSize" Value="20"/>
+    </Style>
+    <Style Selector="TextBlock.Headers">
+      <Setter Property="FontSize" Value="25"/>
+      <Setter Property = "Foreground" Value = "#007ACC" />
+    </Style>
+    <Style Selector="Border.EngWordBorder">
+      <Setter Property="BorderBrush" Value="#797A95"/>
+      <Setter Property="BorderThickness" Value="2"/>
+      <Setter Property="CornerRadius" Value="3"/>
+      <Setter Property="Width" Value="380"/>
+      <Setter Property="Margin" Value="0,5,0,0"/>
+    </Style>
+    <Style Selector="Separator.EngWord">
+      <Setter Property="Height" Value="2"/>
+      <Setter Property="Width" Value="370"/>
+      <Setter Property="Background" Value="#797A95"/>
+    </Style>
+  </Window.Styles>
+  <Button Width="800" Height="450" Background="#393E41" Command="{Binding OnCloseButton}" BorderThickness="0">
+    <Grid ColumnDefinitions="400, 400">
+      <ScrollViewer VerticalScrollBarVisibility="Hidden" Width="400" Grid.Column="0">
+        <StackPanel Background="#0F2016">
+          <StackPanel Orientation="Horizontal" Margin="15,0,0,0">
+            <TextBlock Text="Word of the day: " Classes="Headers" Foreground="#D1CBD9"/>
+            <TextBlock Text="{Binding EngTranslatedWordModel.word}" Classes="Headers"/>
+          </StackPanel>
+
+          <Border Classes="EngWordBorder">
+            <StackPanel>
+              <TextBlock Classes="EngWord" Text="Definitions"/>
+              <ItemsControl Items="{Binding EngTranslatedWordModel.definitions}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <StackPanel>
+                      <Separator Classes="EngWord"/>
+                      <StackPanel Orientation="Horizontal" Margin="15,0,0,0">
+                        <TextBlock Text="{Binding Index}" Classes="Numerator"/>
+                        <TextBlock Text=". " Classes="Numerator"/>
+                        <TextBlock Text="{Binding partOfSpeech}" Classes="Numerator"/>
+                      </StackPanel>
+                      <TextBlock Text="{Binding text}" Classes="EngWord"/>
+                    </StackPanel>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </Border>
+
+          <Border Classes="EngWordBorder">
+            <StackPanel>
+              <TextBlock Classes="EngWord" Text="Examples"/>
+              <ItemsControl Items="{Binding EngTranslatedWordModel.examples}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <StackPanel>
+                      <Separator Classes="EngWord"/>
+                      <TextBlock Text="{Binding text}" Classes="EngWord"/>
+                      <TextBlock Text="{Binding title}" Classes="EngWord" FontStyle="Italic" Foreground="#0F85C0"/>
+                    </StackPanel>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </ScrollViewer>
+
+      <ScrollViewer VerticalScrollBarVisibility="Hidden" Width="400" Grid.Column="1">
+        <StackPanel Background="#121B2E">
+          <StackPanel Orientation="Horizontal" Margin="15,0,0,0">
+            <TextBlock Text="Слово дня: " Classes="Headers" Foreground="#D1CBD9"/>
+            <TextBlock Text="{Binding EngTranslatedWordModel.TranslatedWord}" Classes="Headers"/>
+          </StackPanel>
+
+          <Border Classes="EngWordBorder">
+            <StackPanel>
+              <TextBlock Classes="EngWord" Text="Определение"/>
+              <ItemsControl Items="{Binding EngTranslatedWordModel.TranslatedDefinitions}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <StackPanel>
+                      <Separator Classes="EngWord"/>
+                      <StackPanel Orientation="Horizontal" Margin="15,0,0,0">
+                        <TextBlock Text="{Binding Index}" Classes="Numerator"/>
+                        <TextBlock Text=". " Classes="Numerator"/>
+                        <TextBlock Text="{Binding PartOfSpeech}" Classes="Numerator"/>
+                      </StackPanel>
+                      <TextBlock Text="{Binding Text}" Classes="EngWord"/>
+                    </StackPanel>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </Border>
+
+          <Border Classes="EngWordBorder">
+            <StackPanel>
+              <TextBlock Classes="EngWord" Text="Примеры"/>
+              <ItemsControl Items="{Binding EngTranslatedWordModel.TranslatedExamples}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <StackPanel>
+                      <Separator Classes="EngWord"/>
+                      <TextBlock Text="{Binding Text}" Classes="EngWord"/>
+                      <TextBlock Text="{Binding Title}" Classes="EngWord" FontStyle="Italic" Foreground="#0F85C0"/>
+                    </StackPanel>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </ScrollViewer>
+    </Grid>
+  </Button>
+</Window>

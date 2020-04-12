@@ -24,7 +24,8 @@ namespace StatusDisplayApi.Services
         public List<ToDoListModel> GetToDoList()
         {
             WebRequest request = WebRequest.Create(
-                $"https://api.trello.com/1/lists/{config_json.trello_list_id}/cards?key={config_json.trello_dev_key}&token={config_json.trello_user_key}");
+                $"https://api.trello.com/1/lists/{config_json.trello_list_id}/cards?" +
+                $"key={config_json.trello_dev_key}&token={config_json.trello_user_key}");
             WebResponse response = request.GetResponse();
             List<ToDoListModel> result;
             using (Stream dataStream = response.GetResponseStream())

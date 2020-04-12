@@ -1,9 +1,11 @@
-# This json must be renamed to "config.json"! And values must be filled.
+# This json must be renamed to "config.json"! And values must be filled. And these values doesn't valid.
 {
-	yandex_weather_key: "",
-	yandex_weather_lat: "",
-	yandex_weather_lon: "",
-	trello_dev_key: "",
-	trello_user_key: "",
-	trello_list_id: "",
+	yandex_weather_key: "2312-2233-333-112323-323123",
+	yandex_weather_lat: "32.3123235",
+	yandex_weather_lon: "56.2314512",
+	yandex_translate_key: "sakjhd7sadk23ekjhsai7dsydo782ishd9812uh8udhausd782",
+	yandex_translate_lang: "en-ru",
+	trello_dev_key: "sdkashdjhkajshduwasd",
+	trello_user_key: "sadaskdjh8732i2qgaugsdiuais7dg72asd",
+	trello_list_id: "kjsdh98732jksjdkasd7ashd",
 }

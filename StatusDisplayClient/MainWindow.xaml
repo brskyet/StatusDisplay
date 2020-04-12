@@ -12,19 +12,18 @@
         WindowState="Maximized"
         Topmost="True">
   <Window.Styles>
-    <Style Selector="ListBox">
-      <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
-      <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-      <Setter Property="Height" Value="45"/>
-      <Setter Property="Width" Value="45"/>
-      <Setter Property="Margin" Value="5,0,5,0"/>
-    </Style>
     <Style Selector="TextBlock">
       <Setter Property="FontSize" Value="22"/>
-      <Setter Property = "Foreground" Value = "#E0E0E0" />
+      <Setter Property = "Foreground" Value = "#D1CBD9" />
     </Style>
     <Style Selector="TextBlock.Time">
       <Setter Property="FontSize" Value="60"/>
+    </Style>
+    <Style Selector="TextBlock.EngWord">
+      <Setter Property="FontSize" Value="17"/>
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+      <Setter Property="VerticalAlignment" Value="Top"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
     <Style Selector="TextBox">
       <Setter Property="FontSize" Value="20"/>
@@ -35,78 +34,78 @@
     </Style>
     <Style Selector="TextBox.Timer">
       <Setter Property="Background" Value="{Binding WidgetColor.TimerColor}"/>
-      <Setter Property="Foreground" Value="#E0E0E0"/> 
-      <Setter Property="Padding" Value="10,5,0,0"/> 
+      <Setter Property="Foreground" Value="#E0E0E0"/>
+      <Setter Property="Padding" Value="10,5,0,0"/>
       <Setter Property="FontSize" Value="25"/>
     </Style>
   </Window.Styles>
   <Grid ColumnDefinitions="400, 400">
     <StackPanel Grid.Column="0">
-    <Grid RowDefinitions="120, 220, 110">
+      <Grid RowDefinitions="120, 220, 110">
 
-      <StackPanel Grid.Row="0" Background="{Binding WidgetColor.TimeColor}">
-        <TextBlock Text="{Binding DateTimeModel.Time}" Classes="Time" Margin="5,0,0,0"/>
-        <TextBlock Text="{Binding DateTimeModel.Date}" Margin="5,0,0,0"/>
-      </StackPanel>
-
-      <StackPanel Grid.Row="1" Background="{Binding WidgetColor.WeatherColor}">
-        <TextBlock Text="{Binding WeatherModel.Status}" Margin="5,20,0,0"/>
-        <Grid ColumnDefinitions="250,100" RowDefinitions="Auto,Auto,Auto,Auto,Auto" Margin="5">
-          <TextBlock Text="Температура" Grid.Row="0" Grid.Column="0"/>
-          <TextBlock Text="{Binding WeatherModel.fact.temp}" Grid.Row="0" Grid.Column="1"/>
-          <TextBlock Text="Ощущается как" Grid.Row="1" Grid.Column="0"/>
-          <TextBlock Text="{Binding WeatherModel.fact.feels_like}" Grid.Row="1" Grid.Column="1"/>
-          <TextBlock Text="Скорость ветра" Grid.Row="2" Grid.Column="0"/>
-          <TextBlock Text="{Binding WeatherModel.fact.wind_speed}" Grid.Row="2" Grid.Column="1"/>
-          <TextBlock Text="Давление" Grid.Row="3" Grid.Column="0"/>
-          <TextBlock Text="{Binding WeatherModel.fact.pressure_mm}" Grid.Row="3" Grid.Column="1"/>
-          <TextBlock Text="Влажность воздуха" Grid.Row="4" Grid.Column="0"/>
-          <TextBlock Text="{Binding WeatherModel.fact.humidity}" Grid.Row="4" Grid.Column="1"/>
-        </Grid>
-      </StackPanel>
-
-      <StackPanel Grid.Row="2" Background="{Binding WidgetColor.TimerColor}">
-        <StackPanel Orientation="Horizontal" Margin="20,10,0,0">
-          <TextBox Text="{Binding TimerModel.Hours}" Width="40" x:Name="HoursField" Classes="Timer">
-            <i:Interaction.Behaviors>
-              <ia:EventTriggerBehavior EventName="PointerWheelChanged" SourceObject="{Binding #HoursField}">
-                <ia:CallMethodAction TargetObject="{Binding}" MethodName="HoursScroll" />
-              </ia:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-          </TextBox>
-          <TextBlock Text=" ч " VerticalAlignment="Bottom"  FontSize="25"/>
-
-          <TextBox Text="{Binding TimerModel.Minutes}" Width="40" x:Name="MinutesField" Classes="Timer">
-            <i:Interaction.Behaviors>
-              <ia:EventTriggerBehavior EventName="PointerWheelChanged" SourceObject="{Binding #MinutesField}">
-                <ia:CallMethodAction TargetObject="{Binding}" MethodName="MinutesScroll" />
-              </ia:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-          </TextBox>
-          <TextBlock Text=" мин " VerticalAlignment="Bottom" FontSize="25"/>
-
-          <TextBox Text="{Binding TimerModel.Seconds}" Width="40" x:Name="SecondsField" Classes="Timer">
-            <i:Interaction.Behaviors>
-              <ia:EventTriggerBehavior EventName="PointerWheelChanged" SourceObject="{Binding #SecondsField}">
-                <ia:CallMethodAction TargetObject="{Binding}" MethodName="SecondsScroll" />
-              </ia:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-          </TextBox>
-          <TextBlock Text=" с" VerticalAlignment="Bottom" FontSize="25"/>
+        <StackPanel Grid.Row="0" Background="{Binding WidgetColor.TimeColor}">
+          <TextBlock Text="{Binding DateTimeModel.Time}" Classes="Time" Margin="5,0,0,0"/>
+          <TextBlock Text="{Binding DateTimeModel.Date}" Margin="5,0,0,0"/>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
-          <Button Content="Отмена" Margin="10,0,0,0" Width="100" Background="#1E1E1E"
-                  IsEnabled="{Binding ButtonStatModel.IsTimerStarted}" Command="{Binding OnCancelButton}"
-                  Classes="StartCancel"/>
-          <Button Margin="10,0,0,0" Classes="StartCancel"
-                  Width="100" Background="{Binding ButtonStatModel.ButtonColor}"
-                  Command="{Binding OnStartButton}" x:Name="StartButton">
-            <TextBlock Text="{Binding ButtonStatModel.Text}" Foreground="{Binding ButtonStatModel.TextColor}"/>
-          </Button>
+        <StackPanel Grid.Row="1" Background="{Binding WidgetColor.WeatherColor}">
+          <TextBlock Text="{Binding WeatherModel.Status}" Margin="5,20,0,0"/>
+          <Grid ColumnDefinitions="250,100" RowDefinitions="Auto,Auto,Auto,Auto,Auto" Margin="5">
+            <TextBlock Text="Температура" Grid.Row="0" Grid.Column="0"/>
+            <TextBlock Text="{Binding WeatherModel.fact.temp}" Grid.Row="0" Grid.Column="1"/>
+            <TextBlock Text="Ощущается как" Grid.Row="1" Grid.Column="0"/>
+            <TextBlock Text="{Binding WeatherModel.fact.feels_like}" Grid.Row="1" Grid.Column="1"/>
+            <TextBlock Text="Скорость ветра" Grid.Row="2" Grid.Column="0"/>
+            <TextBlock Text="{Binding WeatherModel.fact.wind_speed}" Grid.Row="2" Grid.Column="1"/>
+            <TextBlock Text="Давление" Grid.Row="3" Grid.Column="0"/>
+            <TextBlock Text="{Binding WeatherModel.fact.pressure_mm}" Grid.Row="3" Grid.Column="1"/>
+            <TextBlock Text="Влажность воздуха" Grid.Row="4" Grid.Column="0"/>
+            <TextBlock Text="{Binding WeatherModel.fact.humidity}" Grid.Row="4" Grid.Column="1"/>
+          </Grid>
         </StackPanel>
-      </StackPanel>
-    </Grid>
+
+        <StackPanel Grid.Row="2" Background="{Binding WidgetColor.TimerColor}">
+          <StackPanel Orientation="Horizontal" Margin="20,10,0,0">
+            <TextBox Text="{Binding TimerModel.Hours}" Width="40" x:Name="HoursField" Classes="Timer">
+              <i:Interaction.Behaviors>
+                <ia:EventTriggerBehavior EventName="PointerWheelChanged" SourceObject="{Binding #HoursField}">
+                  <ia:CallMethodAction TargetObject="{Binding}" MethodName="HoursScroll" />
+                </ia:EventTriggerBehavior>
+              </i:Interaction.Behaviors>
+            </TextBox>
+            <TextBlock Text=" ч " VerticalAlignment="Bottom"  FontSize="25"/>
+
+            <TextBox Text="{Binding TimerModel.Minutes}" Width="40" x:Name="MinutesField" Classes="Timer">
+              <i:Interaction.Behaviors>
+                <ia:EventTriggerBehavior EventName="PointerWheelChanged" SourceObject="{Binding #MinutesField}">
+                  <ia:CallMethodAction TargetObject="{Binding}" MethodName="MinutesScroll" />
+                </ia:EventTriggerBehavior>
+              </i:Interaction.Behaviors>
+            </TextBox>
+            <TextBlock Text=" мин " VerticalAlignment="Bottom" FontSize="25"/>
+
+            <TextBox Text="{Binding TimerModel.Seconds}" Width="40" x:Name="SecondsField" Classes="Timer">
+              <i:Interaction.Behaviors>
+                <ia:EventTriggerBehavior EventName="PointerWheelChanged" SourceObject="{Binding #SecondsField}">
+                  <ia:CallMethodAction TargetObject="{Binding}" MethodName="SecondsScroll" />
+                </ia:EventTriggerBehavior>
+              </i:Interaction.Behaviors>
+            </TextBox>
+            <TextBlock Text=" с" VerticalAlignment="Bottom" FontSize="25"/>
+          </StackPanel>
+
+          <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+            <Button Content="Отмена" Margin="10,0,0,0" Width="100" Background="#1E1E1E"
+                    IsEnabled="{Binding ButtonStatModel.IsTimerStarted}" Command="{Binding OnCancelButton}"
+                    Classes="StartCancel"/>
+            <Button Margin="10,0,0,0" Classes="StartCancel"
+                    Width="100" Background="{Binding ButtonStatModel.ButtonColor}"
+                    Command="{Binding OnStartButton}" x:Name="StartButton">
+              <TextBlock Text="{Binding ButtonStatModel.Text}" Foreground="{Binding ButtonStatModel.TextColor}"/>
+            </Button>
+          </StackPanel>
+        </StackPanel>
+      </Grid>
     </StackPanel>
 
     <StackPanel Grid.Column="1">
@@ -125,7 +124,21 @@
         <StackPanel Grid.Row="1" Background="{Binding WidgetColor.NewsColor}">
         </StackPanel>
 
-        <StackPanel Grid.Row="2" Background="{Binding WidgetColor.EngWordColor}">
+        <StackPanel Grid.Row="2">
+          <Button Command="{Binding OnEngWordClicked}" Height="100" Background="{Binding WidgetColor.EngWordColor}" BorderThickness="0">
+            <ScrollViewer VerticalScrollBarVisibility="Hidden">
+              <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="{Binding EngTranslatedWordModel.Status}" Classes="EngWord"/>
+                  <TextBlock Text="{Binding EngTranslatedWordModel.word}" Classes="EngWord" Foreground="#007ACC"/>
+                  <TextBlock Text="{Binding EngTranslatedWordModel.definitions[0].partOfSpeech}" Classes="EngWord"
+                             Foreground="#9E97B8" Margin="7,0,0,0"/>
+                </StackPanel>
+                <TextBlock Text="{Binding EngTranslatedWordModel.definitions[0].note}" Classes="EngWord"/>
+                <TextBlock Text="{Binding EngTranslatedWordModel.definitions[0].text}" Classes="EngWord" Width="400"/>
+              </StackPanel>
+            </ScrollViewer>
+          </Button>
         </StackPanel>
       </Grid>
     </StackPanel>
