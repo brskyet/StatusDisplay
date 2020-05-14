@@ -33,6 +33,7 @@ namespace StatusDisplayApi
             services.AddSingleton<IToDoList, ToDoList>();
             services.AddSingleton<IEngWord, EngWord>();
             services.AddSingleton<ITranslate, Translate>();
+            services.AddSingleton<INews, News>();
 
             var mappingConfig = new MapperConfiguration(mc =>
             {

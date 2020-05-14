@@ -30,7 +30,6 @@ namespace StatusDisplayApi.Services
             var translationModel = _mapper.Map<EngTranslatedWordModel>(engWordModel);
 
             translationModel.TranslatedWord = CallToTranslateApi(translationModel.word);
-            translationModel.TranslatedNote = CallToTranslateApi(translationModel.note);
             translationModel.TranslatedDefinitions = new List<TranslatedDefinition>();
             translationModel.TranslatedExamples = new List<TranslatedExample>();
 
@@ -41,7 +40,6 @@ namespace StatusDisplayApi.Services
                 translationModel.TranslatedDefinitions.Add(new TranslatedDefinition
                 {
                     Text = CallToTranslateApi(d.text),
-                    Note = CallToTranslateApi(d.note),
                     PartOfSpeech = CallToTranslateApi(d.partOfSpeech),
                     Index = index
                 });
@@ -67,7 +65,7 @@ namespace StatusDisplayApi.Services
 
         private string CallToTranslateApi(string text)
         {
-            if (text == "")
+            if (text == "" || text == null)
                 return "";
             WebRequest request = WebRequest.Create(
                 $"https://translate.yandex.net/api/v1.5/tr.json/translate?key={config_json.yandex_translate_key}" +

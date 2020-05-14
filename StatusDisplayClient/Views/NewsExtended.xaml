@@ -1,0 +1,90 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="StatusDisplayClient.Views.NewsExtended"
+        Title="NewsExtended"
+        Background="#393E41"
+        HasSystemDecorations="False"
+        WindowState="Maximized"
+        HorizontalAlignment = "Left"
+        VerticalAlignment = "Top"
+        Topmost="True">
+  <Window.Styles>
+    <Style Selector="TextBlock">
+      <Setter Property = "Foreground" Value = "#D1CBD9" />
+    </Style>
+    <Style Selector="TextBlock.Headers">
+      <Setter Property="FontSize" Value="25"/>
+      <Setter Property = "Foreground" Value = "#007ACC" />
+    </Style>
+    <Style Selector="TextBlock.News">
+      <Setter Property="FontSize" Value="20"/>
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+      <Setter Property="VerticalAlignment" Value="Top"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
+      <Setter Property = "Width" Value = "365" />
+      <Setter Property = "Margin" Value = "10,0,10,0" />
+    </Style>
+    <Style Selector="Border.NewsBorder">
+      <Setter Property="BorderBrush" Value="#797A95"/>
+      <Setter Property="BorderThickness" Value="2"/>
+      <Setter Property="CornerRadius" Value="3"/>
+      <Setter Property="Width" Value="380"/>
+      <Setter Property="Margin" Value="0,5,0,0"/>
+    </Style>
+    <Style Selector="Separator.News">
+      <Setter Property="Height" Value="2"/>
+      <Setter Property="Width" Value="370"/>
+      <Setter Property="Background" Value="#797A95"/>
+    </Style>
+  </Window.Styles>
+  <Button Width="800" Height="450" Background="#393E41" Command="{Binding OnCloseButton}" BorderThickness="0">
+    <Grid ColumnDefinitions="400, 400">
+      <ScrollViewer VerticalScrollBarVisibility="Hidden" Width="400" Grid.Column="0">
+        <StackPanel Background="#1D1F2C">
+          <Border Classes="NewsBorder">
+            <StackPanel>
+              <TextBlock Text="Главное" Classes="Headers" Foreground="#D1CBD9" HorizontalAlignment="Center"/>
+              <ItemsControl Items="{Binding NewsModel.Index}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <StackPanel>
+                      <Separator Classes="News"/>
+                      <TextBlock Text="{Binding Time}" Classes="News" Foreground="#805E76"/>
+                      <TextBlock Text="{Binding Title}" Classes="News" Foreground="#A2B0D7"/>
+                      <TextBlock Text="{Binding Description}" Classes="News"/>
+                    </StackPanel>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </ScrollViewer>
+
+      <ScrollViewer VerticalScrollBarVisibility="Hidden" Width="400" Grid.Column="1">
+        <StackPanel Background="#0C1A1D">
+          <Border Classes="NewsBorder">
+            <StackPanel>
+              <TextBlock Text="Игры" Classes="Headers" Foreground="#D1CBD9" HorizontalAlignment="Center"/>
+              <ItemsControl Items="{Binding NewsModel.Games}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <StackPanel>
+                      <Separator Classes="News"/>
+                      <TextBlock Text="{Binding Time}" Classes="News" Foreground="#805E76"/>
+                      <TextBlock Text="{Binding Title}" Classes="News" Foreground="#A2B0D7"/>
+                      <TextBlock Text="{Binding Description}" Classes="News"/>
+                    </StackPanel>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </ScrollViewer>
+    </Grid>
+  </Button>
+</Window>

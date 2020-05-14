@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.IO;
+using StatusDisplayClient.Views;
 
 namespace StatusDisplayClient.ViewModels
 {
@@ -132,9 +133,11 @@ namespace StatusDisplayClient.ViewModels
             }
         }
 
+        // for timer widget
         private TimeSpan timer;
         private int timerHours, timerMinutes, timerSeconds;
 
+        //for flash animation
         private int displayFlash;
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -150,7 +153,7 @@ namespace StatusDisplayClient.ViewModels
         {
             WeatherModel = new WeatherModel
             {
-                Status = "Weather forecast",
+                Status = "Weather forecast is loading...",
                 fact = new Fact
                 {
                     temp = "Loading...",
@@ -163,7 +166,7 @@ namespace StatusDisplayClient.ViewModels
 
             ToDoListModel = new ToDoListModel
             {
-                Status = "Список задач",
+                Status = "To-do list is loading...",
                 toDoListItems = new List<ToDoListItem>()
             };
 
@@ -196,6 +199,11 @@ namespace StatusDisplayClient.ViewModels
             EngTranslatedWordModel = new EngTranslatedWordModel
             {
                 Status = "Word of the day is loading..."
+            };
+
+            NewsModel = new NewsModel
+            {
+                LatestTitle = "News are loading..."
             };
 
             timerForecast = new DispatcherTimer
@@ -233,20 +241,63 @@ namespace StatusDisplayClient.ViewModels
 
             timerEngWord = new DispatcherTimer
             {
-                Interval = TimeSpan.FromSeconds(1)
+                Interval = TimeSpan.FromMilliseconds(500)
             };
             timerEngWord.Tick += OnTimedEventEngWord;
+            timerEngWord.Start();
+
+            timerNews = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMinutes(1)
+            };
+            timerNews.Tick += OnTimedEventNews;
+            timerNews.Start();
 
             OnTimedEventForecast();
             OnTimedEventToDoList();
             OnTimedEventTime();
             OnTimedEventEngWord();
+            OnTimedEventNews();
+        }
+
+        private async void OnTimedEventNews(object sender = null, EventArgs e = null)
+        {
+            try
+            {
+                var model = await Task.Run(News.GetNews);
+                if(model.Index[0].Time.CompareTo(model.Games[0].Time) > 0)
+                {
+                    model.LatestTitle = model.Index[0].Time.ToString() + ": " + model.Index[0].Title;
+                    model.LatestDescription = model.Index[0].Description;
+                }
+                else
+                {
+                    model.LatestTitle = model.Games[0].Time.ToString() + ": " + model.Games[0].Title;
+                    model.LatestDescription = model.Games[0].Description;
+                }
+                NewsModel = model;
+            }
+            catch
+            {
+                var model = NewsModel;
+                model.LatestTitle = "News: an error was occurred";
+                NewsModel = model;
+            }
         }
 
         private async void OnTimedEventEngWord(object sender = null, EventArgs e = null)
         {
-            if(sender == null || ("T: {0:T}", DateTime.Now) == ("T: {0:T}", new DateTime(2008, 6, 1, 0, 0, 0)))
+            if (sender == null || DateTime.Now.ToLongTimeString() == "5:00:00") // call from ctor or if now is 5 AM
             {
+                //section for To-do list
+                var todomodel = ToDoListModel;
+                foreach (var item in todomodel.toDoListItems)
+                {
+                    item.IsChecked = false;
+                }
+                ToDoListModel = todomodel;
+
+                //section for word of day
                 try
                 {
                     var model = await Task.Run(EngWord.GetEngWord);
@@ -256,7 +307,7 @@ namespace StatusDisplayClient.ViewModels
                 catch
                 {
                     var model = EngTranslatedWordModel;
-                    model.Status = "Word of the day: an error was occurred: ";
+                    model.Status = "Word of the day: an error was occurred";
                     EngTranslatedWordModel = model;
                 }
             }
@@ -290,7 +341,8 @@ namespace StatusDisplayClient.ViewModels
             }
             catch
             {
-                var model = new WeatherModel { Status = "Weather forecast: an error was occurred", fact = WeatherModel.fact };
+                var model = new WeatherModel { Status = "Weather forecast: an error was occurred", 
+                    fact = WeatherModel.fact, forecasts = WeatherModel.forecasts };
                 WeatherModel = model;
             }
         }
@@ -299,7 +351,7 @@ namespace StatusDisplayClient.ViewModels
         {
             try
             {
-                var toDoListItems = await Task.Run(ToDo.GetToDoList);
+                var toDoListItems = await Task.Run(() => ToDo.GetToDoList(ToDoListModel.toDoListItems));
                 var model = new ToDoListModel { Status = "Список задач", toDoListItems = toDoListItems };
                 ToDoListModel = model;
             }
@@ -325,6 +377,7 @@ namespace StatusDisplayClient.ViewModels
             }
         }
 
+        // trigger then mouse scrolling on hours input field
         public void HoursScroll(object sender, object parameter)
         {
             var param = (Avalonia.Input.PointerWheelEventArgs)parameter;
@@ -402,6 +455,18 @@ namespace StatusDisplayClient.ViewModels
         public void OnEngWordClicked()
         {
             EngWordExtended window = new EngWordExtended(EngTranslatedWordModel);
+            window.Show();
+        }
+
+        public void OnNewsClicked()
+        {
+            NewsExtended window = new NewsExtended(NewsModel);
+            window.Show();
+        }
+
+        public void OnWeatherClicked()
+        {
+            WeatherExtended window = new WeatherExtended(WeatherModel);
             window.Show();
         }
 

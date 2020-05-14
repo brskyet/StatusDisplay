@@ -12,7 +12,9 @@ namespace StatusDisplayClient.Models
 
     public class ToDoListItem
     {
+        public string id { get; set; }
         public string name { get; set; }
+        public bool IsChecked { get; set; }
         public Badges badges { get; set; }
     }
 

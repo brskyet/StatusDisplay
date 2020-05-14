@@ -24,7 +24,7 @@ namespace StatusDisplayApi.Services
 
         public WeatherModel GetForecast()
         {
-            WebRequest request = WebRequest.Create($"https://api.weather.yandex.ru/v1/informers?" +
+            WebRequest request = WebRequest.Create($"https://api.weather.yandex.ru/v1/forecast?" +
                 $"lat={config_json.yandex_weather_lat}&lon={config_json.yandex_weather_lon}&lang=en_US");
             request.Headers.Add($"X-Yandex-API-Key: {config_json.yandex_weather_key}");
             WebResponse response = request.GetResponse();

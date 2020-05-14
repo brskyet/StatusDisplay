@@ -6,13 +6,14 @@ using System.Text;
 
 namespace StatusDisplayClient.ViewModels
 {
-    class EngWordExtendedViewModel
+    class WeatherExtendedViewModel
     {
-        public EngTranslatedWordModel EngTranslatedWordModel { get; }
-        EngWordExtended _window;
-        public EngWordExtendedViewModel(EngTranslatedWordModel model, EngWordExtended window)
+        public WeatherModel WeatherModel { get; }
+        WeatherExtended _window;
+
+        public WeatherExtendedViewModel(WeatherModel model, WeatherExtended window)
         {
-            EngTranslatedWordModel = model;
+            WeatherModel = model;
             _window = window;
         }
 

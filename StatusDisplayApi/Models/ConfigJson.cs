@@ -15,5 +15,6 @@ namespace StatusDisplayApi.Models
         public string trello_dev_key { get; set; }
         public string trello_user_key { get; set; }
         public string trello_list_id { get; set; }
+        public string wordnik_api_key { get; set; }
     }
 }

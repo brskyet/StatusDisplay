@@ -7,6 +7,7 @@ namespace StatusDisplayApi.Models
 {
     public class ToDoListModel
     {
+        public string id { get; set; }
         public string name { get; set; }
         public Badges badges { get; set; }
     }

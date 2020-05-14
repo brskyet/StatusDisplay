@@ -10,6 +10,8 @@
         Background="#1E1E1E"
         HasSystemDecorations="False"
         WindowState="Maximized"
+        HorizontalAlignment = "Left"
+        VerticalAlignment = "Top"
         Topmost="True">
   <Window.Styles>
     <Style Selector="TextBlock">
@@ -19,11 +21,14 @@
     <Style Selector="TextBlock.Time">
       <Setter Property="FontSize" Value="60"/>
     </Style>
-    <Style Selector="TextBlock.EngWord">
+    <Style Selector="TextBlock.LongRead">
       <Setter Property="FontSize" Value="17"/>
       <Setter Property="HorizontalAlignment" Value="Left"/>
       <Setter Property="VerticalAlignment" Value="Top"/>
       <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style Selector="TextBlock.ToDoList">
+      <Setter Property="Margin" Value="10,0,0,0"/>
     </Style>
     <Style Selector="TextBox">
       <Setter Property="FontSize" Value="20"/>
@@ -38,30 +43,47 @@
       <Setter Property="Padding" Value="10,5,0,0"/>
       <Setter Property="FontSize" Value="25"/>
     </Style>
+    <Style Selector="Border.Main">
+      <Setter Property="BorderBrush" Value="#797A95"/>
+      <Setter Property="BorderThickness" Value="2"/>
+      <Setter Property="CornerRadius" Value="7"/>
+      <Setter Property="Width" Value="380"/>
+      <Setter Property="Margin" Value="0,5,0,0"/>
+    </Style>
+    <Style Selector="Separator.Main">
+      <Setter Property="Height" Value="2"/>
+      <Setter Property="Width" Value="400"/>
+      <Setter Property="Background" Value="#797A95"/>
+    </Style>
   </Window.Styles>
   <Grid ColumnDefinitions="400, 400">
     <StackPanel Grid.Column="0">
       <Grid RowDefinitions="120, 220, 110">
 
         <StackPanel Grid.Row="0" Background="{Binding WidgetColor.TimeColor}">
-          <TextBlock Text="{Binding DateTimeModel.Time}" Classes="Time" Margin="5,0,0,0"/>
+          <TextBlock Text="{Binding DateTimeModel.Time}" Classes="Time"/>
           <TextBlock Text="{Binding DateTimeModel.Date}" Margin="5,0,0,0"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Background="{Binding WidgetColor.WeatherColor}">
-          <TextBlock Text="{Binding WeatherModel.Status}" Margin="5,20,0,0"/>
-          <Grid ColumnDefinitions="250,100" RowDefinitions="Auto,Auto,Auto,Auto,Auto" Margin="5">
-            <TextBlock Text="Температура" Grid.Row="0" Grid.Column="0"/>
-            <TextBlock Text="{Binding WeatherModel.fact.temp}" Grid.Row="0" Grid.Column="1"/>
-            <TextBlock Text="Ощущается как" Grid.Row="1" Grid.Column="0"/>
-            <TextBlock Text="{Binding WeatherModel.fact.feels_like}" Grid.Row="1" Grid.Column="1"/>
-            <TextBlock Text="Скорость ветра" Grid.Row="2" Grid.Column="0"/>
-            <TextBlock Text="{Binding WeatherModel.fact.wind_speed}" Grid.Row="2" Grid.Column="1"/>
-            <TextBlock Text="Давление" Grid.Row="3" Grid.Column="0"/>
-            <TextBlock Text="{Binding WeatherModel.fact.pressure_mm}" Grid.Row="3" Grid.Column="1"/>
-            <TextBlock Text="Влажность воздуха" Grid.Row="4" Grid.Column="0"/>
-            <TextBlock Text="{Binding WeatherModel.fact.humidity}" Grid.Row="4" Grid.Column="1"/>
-          </Grid>
+        <StackPanel Grid.Row="1">
+          <Button Command="{Binding OnWeatherClicked}" Height="220" Background="{Binding WidgetColor.WeatherColor}" BorderThickness="0">
+            <StackPanel>
+              <TextBlock Text="{Binding WeatherModel.Status}" Margin="5,20,0,0"/>
+              <Grid ColumnDefinitions="250,100" RowDefinitions="Auto,Auto,Auto,Auto,Auto" Margin="5">
+                <TextBlock Text="Температура" Grid.Row="0" Grid.Column="0"/>
+                <TextBlock Text="{Binding WeatherModel.fact.temp}" Grid.Row="0" Grid.Column="1"/>
+                <TextBlock Text="Ощущается как" Grid.Row="1" Grid.Column="0"/>
+                <TextBlock Text="{Binding WeatherModel.fact.feels_like}" Grid.Row="1" Grid.Column="1"/>
+                <TextBlock Text="Скорость ветра" Grid.Row="2" Grid.Column="0"/>
+                <TextBlock Text="{Binding WeatherModel.fact.wind_speed}" Grid.Row="2" Grid.Column="1"/>
+                <TextBlock Text="Давление" Grid.Row="3" Grid.Column="0"/>
+                <TextBlock Text="{Binding WeatherModel.fact.pressure_mm}" Grid.Row="3" Grid.Column="1"/>
+                <TextBlock Text="Влажность воздуха" Grid.Row="4" Grid.Column="0"/>
+                <TextBlock Text="{Binding WeatherModel.fact.humidity}" Grid.Row="4" Grid.Column="1"/>
+              </Grid>
+            </StackPanel>
+          </Button>
+
         </StackPanel>
 
         <StackPanel Grid.Row="2" Background="{Binding WidgetColor.TimerColor}">
@@ -110,18 +132,35 @@
 
     <StackPanel Grid.Column="1">
       <Grid RowDefinitions="250, 100, 100">
-        <StackPanel Grid.Row="0" Background="{Binding WidgetColor.TodoListColor}">
-          <TextBlock Text="{Binding ToDoListModel.Status}" Margin="50,20,0,0"/>
-          <ItemsControl Items="{Binding ToDoListModel.toDoListItems}" Margin="30,10,0,0">
-            <ItemsControl.ItemTemplate>
-              <DataTemplate>
-                <TextBlock Text="{Binding name}"/>
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-        </StackPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+          <StackPanel Grid.Row="0" Background="{Binding WidgetColor.TodoListColor}" Width="400">
+            <TextBlock Text="{Binding ToDoListModel.Status}" HorizontalAlignment="Center"
+                       FontSize="25" Width="380"/>
+            <ItemsControl Items="{Binding ToDoListModel.toDoListItems}" Margin="0,10,0,0">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel>
+                    <Separator Classes="Main"/>
+                    <StackPanel Orientation="Horizontal">
+                      <CheckBox Margin="20,7,0,0" IsChecked="{Binding IsChecked}"/>
+                      <TextBlock Text="{Binding name}" Classes="ToDoList"/>
+                    </StackPanel>
+                  </StackPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </ScrollViewer>
 
-        <StackPanel Grid.Row="1" Background="{Binding WidgetColor.NewsColor}">
+        <StackPanel Grid.Row="1">
+          <Button Command="{Binding OnNewsClicked}" Height="100" Background="{Binding WidgetColor.NewsColor}" BorderThickness="0">
+            <ScrollViewer VerticalScrollBarVisibility="Hidden">
+              <StackPanel>
+                <TextBlock Text="{Binding NewsModel.LatestTitle}" Classes="LongRead" Width="400"/>
+                <TextBlock Text="{Binding NewsModel.LatestDescription}" Classes="LongRead" Width="400"/>
+              </StackPanel>
+            </ScrollViewer>
+          </Button>
         </StackPanel>
 
         <StackPanel Grid.Row="2">
@@ -129,13 +168,12 @@
             <ScrollViewer VerticalScrollBarVisibility="Hidden">
               <StackPanel>
                 <StackPanel Orientation="Horizontal">
-                  <TextBlock Text="{Binding EngTranslatedWordModel.Status}" Classes="EngWord"/>
-                  <TextBlock Text="{Binding EngTranslatedWordModel.word}" Classes="EngWord" Foreground="#007ACC"/>
-                  <TextBlock Text="{Binding EngTranslatedWordModel.definitions[0].partOfSpeech}" Classes="EngWord"
+                  <TextBlock Text="{Binding EngTranslatedWordModel.Status}" Classes="LongRead"/>
+                  <TextBlock Text="{Binding EngTranslatedWordModel.word}" Classes="LongRead" Foreground="#007ACC"/>
+                  <TextBlock Text="{Binding EngTranslatedWordModel.definitions[0].partOfSpeech}" Classes="LongRead"
                              Foreground="#9E97B8" Margin="7,0,0,0"/>
                 </StackPanel>
-                <TextBlock Text="{Binding EngTranslatedWordModel.definitions[0].note}" Classes="EngWord"/>
-                <TextBlock Text="{Binding EngTranslatedWordModel.definitions[0].text}" Classes="EngWord" Width="400"/>
+                <TextBlock Text="{Binding EngTranslatedWordModel.definitions[0].text}" Classes="LongRead" Width="400"/>
               </StackPanel>
             </ScrollViewer>
           </Button>

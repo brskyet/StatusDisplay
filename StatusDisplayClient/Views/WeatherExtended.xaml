@@ -1,0 +1,86 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="StatusDisplayClient.Views.WeatherExtended"
+        Title="WeatherExtended"
+        Background="#393E41"
+        HasSystemDecorations="False"
+        WindowState="Maximized"
+        HorizontalAlignment = "Left"
+        VerticalAlignment = "Top"
+        Topmost="True">
+  <Window.Styles>
+    <Style Selector="TextBlock">
+      <Setter Property = "Foreground" Value = "#D1CBD9" />
+    </Style>
+    <Style Selector="Separator.Weather">
+      <Setter Property="Height" Value="2"/>
+      <Setter Property="Width" Value="1600"/>
+      <Setter Property="Background" Value="#797A95"/>
+    </Style>
+    <Style Selector="Border.Weather">
+      <Setter Property="BorderBrush" Value="#797A95"/>
+      <Setter Property="BorderThickness" Value="2"/>
+      <Setter Property="CornerRadius" Value="3"/>
+      <Setter Property="Width" Value="800"/>
+      <Setter Property="Margin" Value="0,10,0,0"/>
+    </Style>
+  </Window.Styles>
+  <Button Width="800" Height="450" Background="#27212F" Command="{Binding OnCloseButton}" BorderThickness="0">
+    <ScrollViewer VerticalScrollBarVisibility="Hidden" Width="800">
+      <ItemsControl Items="{Binding WeatherModel.forecasts}" Width="800">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border Classes="Weather">
+              <Grid RowDefinitions="90,90,90,90,90" ColumnDefinitions="120,100,220,120,120,120">
+                <TextBlock Text="{Binding date}" Grid.Column="0" Grid.Row="0"/>
+                <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical">
+                  <TextBlock Text="Вероятность"/>
+                  <TextBlock Text="осадков"/>
+                </StackPanel>
+                <TextBlock Text="" Grid.Column="2" Grid.Row="0"/>
+                <StackPanel Grid.Column="3" Grid.Row="0" Orientation="Vertical">
+                  <TextBlock Text="Давление,"/>
+                  <TextBlock Text="мм рт. ст."/>
+                </StackPanel>
+                <TextBlock Text="Влажность" Grid.Column="4" Grid.Row="0"/>
+                <TextBlock Text="Ощущается как" Grid.Column="5" Grid.Row="0"/>
+                <Separator Classes="Weather"/>
+
+                <TextBlock Text="Утром" Grid.Column="0" Grid.Row="1"/>
+                <TextBlock Text="{Binding parts.morning.prec_prob}" Grid.Column="1" Grid.Row="1"/>
+                <TextBlock Text="{Binding parts.morning.condition}" Grid.Column="2" Grid.Row="1"/>
+                <TextBlock Text="{Binding parts.morning.pressure_mm}" Grid.Column="3" Grid.Row="1"/>
+                <TextBlock Text="{Binding parts.morning.humidity}" Grid.Column="4" Grid.Row="1"/>
+                <TextBlock Text="{Binding parts.morning.feels_like}" Grid.Column="5" Grid.Row="1"/>
+
+                <TextBlock Text="Днем" Grid.Column="0" Grid.Row="2"/>
+                <TextBlock Text="{Binding parts.day.prec_prob}" Grid.Column="1" Grid.Row="2"/>
+                <TextBlock Text="{Binding parts.day.condition}" Grid.Column="2" Grid.Row="2"/>
+                <TextBlock Text="{Binding parts.day.pressure_mm}" Grid.Column="3" Grid.Row="2"/>
+                <TextBlock Text="{Binding parts.day.humidity}" Grid.Column="4" Grid.Row="2"/>
+                <TextBlock Text="{Binding parts.day.feels_like}" Grid.Column="5" Grid.Row="2"/>
+
+                <TextBlock Text="Вечером" Grid.Column="0" Grid.Row="3"/>
+                <TextBlock Text="{Binding parts.evening.prec_prob}" Grid.Column="1" Grid.Row="3"/>
+                <TextBlock Text="{Binding parts.evening.condition}" Grid.Column="2" Grid.Row="3"/>
+                <TextBlock Text="{Binding parts.evening.pressure_mm}" Grid.Column="3" Grid.Row="3"/>
+                <TextBlock Text="{Binding parts.evening.humidity}" Grid.Column="4" Grid.Row="3"/>
+                <TextBlock Text="{Binding parts.evening.feels_like}" Grid.Column="5" Grid.Row="3"/>
+
+                <TextBlock Text="Ночью" Grid.Column="0" Grid.Row="4"/>
+                <TextBlock Text="{Binding parts.night.prec_prob}" Grid.Column="1" Grid.Row="4"/>
+                <TextBlock Text="{Binding parts.night.condition}" Grid.Column="2" Grid.Row="4"/>
+                <TextBlock Text="{Binding parts.night.pressure_mm}" Grid.Column="3" Grid.Row="4"/>
+                <TextBlock Text="{Binding parts.night.humidity}" Grid.Column="4" Grid.Row="4"/>
+                <TextBlock Text="{Binding parts.night.feels_like}" Grid.Column="5" Grid.Row="4"/>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
+  </Button>
+</Window>

@@ -4,18 +4,18 @@ using Avalonia.Markup.Xaml;
 using StatusDisplayClient.Models;
 using StatusDisplayClient.ViewModels;
 
-namespace StatusDisplayClient
+namespace StatusDisplayClient.Views
 {
-    public class EngWordExtended : Window
+    public class WeatherExtended : Window
     {
-        public EngWordExtended()
+        public WeatherExtended()
         {
 
         }
 
-        public EngWordExtended(EngTranslatedWordModel model)
+        public WeatherExtended(WeatherModel model)
         {
-            DataContext = new EngWordExtendedViewModel(model, this);
+            DataContext = new WeatherExtendedViewModel(model, this);
             this.InitializeComponent();
 #if DEBUG
             this.AttachDevTools();

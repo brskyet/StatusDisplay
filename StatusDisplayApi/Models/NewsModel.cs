@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace StatusDisplayClient.Models
+namespace StatusDisplayApi.Models
 {
     public class NewsModel
     {
         public List<SingleNews> Games { get; set; }
         public List<SingleNews> Index { get; set; }
-        public string LatestTitle { get; set; }
-        public string LatestDescription { get; set; }
     }
 
     public class SingleNews

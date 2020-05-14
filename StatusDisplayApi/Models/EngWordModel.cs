@@ -10,14 +10,12 @@ namespace StatusDisplayApi.Models
         public string word { get; set; }
         public List<Definition> definitions { get; set; }
         public List<Example> examples { get; set; }
-        public string note { get; set; }
     }
     
     public class Definition
     {
         public int Index { get; set; }
         public string text { get; set; }
-        public string note { get; set; }
         public string partOfSpeech { get; set; }
     }
 
