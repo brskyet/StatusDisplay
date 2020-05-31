@@ -101,7 +101,7 @@
 
             <TextBox Text="{Binding TimerModel.Minutes}" Width="40" x:Name="MinutesField" Classes="Timer">
               <i:Interaction.Behaviors>
-                <ia:EventTriggerBehavior EventName="PointerMoved" SourceObject="{Binding #MinutesField}">
+                <ia:EventTriggerBehavior EventName="PointerWheelChanged" SourceObject="{Binding #MinutesField}">
                   <ia:CallMethodAction TargetObject="{Binding}" MethodName="MinutesScroll" />
                 </ia:EventTriggerBehavior>
               </i:Interaction.Behaviors>

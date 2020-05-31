@@ -11,6 +11,7 @@ namespace StatusDisplayClient.Services
 {
     static class Forecast
     {
+        // Dictionary for replacement
         static readonly Dictionary<string, string> Condition = new Dictionary<string, string>
         {
             {"clear", "Ясно"},
@@ -32,6 +33,7 @@ namespace StatusDisplayClient.Services
             {"overcast-and-light-snow", "Небольшой снег, пасмурно"},
             {"partly-cloudy-and-light-snow", "Небольшой снег, малооблачно"}
         };
+
         static public WeatherModel GetForecast()
         {
             WebRequest request = WebRequest.Create("https://localhost:5001/api/Data/GetForecast");
@@ -45,6 +47,7 @@ namespace StatusDisplayClient.Services
             }
             response.Close();
 
+            // Replacement default values to readable values
             model.Facts.Condition = Condition[model.Facts.Condition];
             foreach (var f in model.Forecasts)
             {

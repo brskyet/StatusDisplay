@@ -46,21 +46,21 @@ namespace StatusDisplayApi.Services
                 Forecasts = new List<Forecast>()
             };
             // facts doesn't changes
-            result.Facts = _mapper.Map<Facts>(resultDto.fact);
-            foreach(var f in resultDto.forecasts)
+            result.Facts = _mapper.Map<Facts>(resultDto.Fact);
+            foreach(var f in resultDto.Forecasts)
             {
                 result.Forecasts.Add(new Forecast()
                 {
-                    Date = f.date,
-                    Sunrise = f.sunrise,
-                    Sunset = f.sunset,
+                    Date = f.Date,
+                    Sunrise = f.Sunrise,
+                    Sunset = f.Sunset,
                     Parts = new List<Part>()
                     {
                         // night is time between 00 and 06 AM
-                        _mapper.Map<Part>(f.parts.night),
-                        _mapper.Map<Part>(f.parts.morning),
-                        _mapper.Map<Part>(f.parts.day),
-                        _mapper.Map<Part>(f.parts.evening)
+                        _mapper.Map<Part>(f.Parts.Night),
+                        _mapper.Map<Part>(f.Parts.Morning),
+                        _mapper.Map<Part>(f.Parts.Day),
+                        _mapper.Map<Part>(f.Parts.Evening)
                     }
                 });
             }
@@ -73,13 +73,13 @@ namespace StatusDisplayApi.Services
                 // don't forget to remove this part of day
                 result.Forecasts[i].Parts.RemoveAt(0);
                 // at noon uv index is the most high
-                result.Forecasts[i].UvIndex = resultDto.forecasts[i].parts.day.uv_index;
+                result.Forecasts[i].UvIndex = resultDto.Forecasts[i].Parts.Day.Uv_index;
             }
 
             for (int i = 0; i <= result.Forecasts.Count - 1; i++)
             {
                 // at noon uv index is the most high
-                result.Forecasts[i].UvIndex = resultDto.forecasts[i].parts.day.uv_index;
+                result.Forecasts[i].UvIndex = resultDto.Forecasts[i].Parts.Day.Uv_index;
             }
 
             result.Facts.UvIndex = result.Forecasts[0].UvIndex;

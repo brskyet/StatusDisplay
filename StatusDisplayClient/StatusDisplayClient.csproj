@@ -31,9 +31,8 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.10" />
     <PackageReference Include="Avalonia.Skia" Version="0.9.10" />
     <PackageReference Include="Avalonia.X11" Version="0.9.10" />
-    <PackageReference Include="Avalonia.Xaml.Behaviors" Version="0.9.0" />
+    <PackageReference Include="Avalonia.Xaml.Behaviors" Version="0.9.9" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="ReactiveUI" Version="11.2.3" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\NewsExtended.xaml">

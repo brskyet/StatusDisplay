@@ -36,6 +36,7 @@ namespace StatusDisplayClient.Models
         public string PartOfDay { get; set; }
         public string Temp_min { get; set; }
         public string Temp_max { get; set; }
+        public string Temp_avg { get; set; }
         public string Temp_str { get; set; }
         public string Feels_like { get; set; }
         public string Condition { get; set; }

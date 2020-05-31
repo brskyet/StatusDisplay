@@ -23,7 +23,8 @@ namespace StatusDisplayClient.Services
             }
             response.Close();
 
-            foreach(var item in result)
+            // Cycle for set checkboxes
+            foreach (var item in result)
             {
                 ToDoListItem i = currentModel.Find(x => x.id == item.id);
                 if (i != null)

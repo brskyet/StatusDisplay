@@ -145,12 +145,14 @@ namespace StatusDisplayClient.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private DispatcherTimer timerForecast, timerToDo, timerTime, timerTimer, timerFlash, timerEngWord, timerNews;
+        // many timers
+        private readonly DispatcherTimer timerForecast, timerToDo, timerTime, timerTimer, timerFlash, timerEngWord, timerNews;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public MainWindowViewModel()
         {
+            // set default values
             WeatherModel = new WeatherModel
             {
                 Status = "Weather forecast is loading...",
@@ -206,6 +208,7 @@ namespace StatusDisplayClient.ViewModels
                 LatestTitle = "News are loading..."
             };
 
+            // set timers condition
             timerForecast = new DispatcherTimer
             {
                 Interval = TimeSpan.FromHours(1)
@@ -243,7 +246,7 @@ namespace StatusDisplayClient.ViewModels
             {
                 Interval = TimeSpan.FromMilliseconds(500)
             };
-            timerEngWord.Tick += OnTimedEventEngWord;
+            timerEngWord.Tick += OnTimedEvent5AM;
             timerEngWord.Start();
 
             timerNews = new DispatcherTimer
@@ -253,10 +256,11 @@ namespace StatusDisplayClient.ViewModels
             timerNews.Tick += OnTimedEventNews;
             timerNews.Start();
 
+            // trigger some events one time at start of project 
             OnTimedEventForecast();
             OnTimedEventToDoList();
             OnTimedEventTime();
-            OnTimedEventEngWord();
+            OnTimedEvent5AM();
             OnTimedEventNews();
         }
 
@@ -265,6 +269,7 @@ namespace StatusDisplayClient.ViewModels
             try
             {
                 var model = await Task.Run(News.GetNews);
+                // set latest news to main window. It depends on the time of news from each category
                 if (model.Index[0].Time.CompareTo(model.Games[0].Time) > 0)
                 {
                     model.LatestTitle = model.Index[0].Time.ToString() + ": " + model.Index[0].Title;
@@ -285,7 +290,7 @@ namespace StatusDisplayClient.ViewModels
             }
         }
 
-        private async void OnTimedEventEngWord(object sender = null, EventArgs e = null)
+        private async void OnTimedEvent5AM(object sender = null, EventArgs e = null)
         {
             if (sender == null || DateTime.Now.ToLongTimeString() == "5:00:00") // call from ctor or if now is 5 AM
             {
@@ -315,6 +320,7 @@ namespace StatusDisplayClient.ViewModels
 
         private void OnTimedEventTimer(object sender = null, EventArgs e = null)
         {
+            // check if total seconds in timer more than 0 and subtract one second
             if (timer.TotalSeconds > 0)
             {
                 timer -= new TimeSpan(0, 0, 1);
@@ -332,6 +338,7 @@ namespace StatusDisplayClient.ViewModels
             try
             {
                 var model = await Task.Run(Forecast.GetForecast);
+                // minor edits for beauty
                 model.Facts.Temp += "°";
                 model.Facts.Feels_like += "°";
                 model.Facts.UvIndex += model.Facts.UvIndex switch
@@ -435,6 +442,7 @@ namespace StatusDisplayClient.ViewModels
             }
         }
 
+        // trigger then mouse scrolling on minutes input field
         public void MinutesScroll(object sender, object parameter)
         {
             var param = (Avalonia.Input.PointerWheelEventArgs)parameter;
@@ -448,6 +456,7 @@ namespace StatusDisplayClient.ViewModels
             }
         }
 
+        // trigger then mouse scrolling on seconds input field
         public void SecondsScroll(object sender, object parameter)
         {
             var param = (Avalonia.Input.PointerWheelEventArgs)parameter;
@@ -463,6 +472,7 @@ namespace StatusDisplayClient.ViewModels
 
         public void OnStartButton()
         {
+            // don't allow to start with default values
             if (TimerModel.Hours == 0 && TimerModel.Minutes == 0 && TimerModel.Seconds == 0)
                 return;
             if (ButtonStatModel.IsTimerStarted == false)
@@ -489,6 +499,7 @@ namespace StatusDisplayClient.ViewModels
             }
         }
 
+        // push on cancel button or call from method
         public void OnCancelButton()
         {
             timerTimer.Stop();
