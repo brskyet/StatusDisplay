@@ -11,7 +11,7 @@ namespace StatusDisplayClient.Services
 {
     static class Forecast
     {
-        static Dictionary<string, string> Condition = new Dictionary<string, string>
+        static readonly Dictionary<string, string> Condition = new Dictionary<string, string>
         {
             {"clear", "Ясно"},
             {"partly-cloudy", "Малооблачно"},
@@ -45,21 +45,21 @@ namespace StatusDisplayClient.Services
             }
             response.Close();
 
-            model.fact.condition = Condition[model.fact.condition];
-            foreach (var forecast in model.forecasts)
+            model.Facts.Condition = Condition[model.Facts.Condition];
+            foreach (var f in model.Forecasts)
             {
-                var date = DateTime.Parse(forecast.date);
-                forecast.date = date.ToLongDateString();
+                var date = DateTime.Parse(f.Date);
+                f.Date = date.ToLongDateString();
                 if (date.Day == DateTime.Now.Day)
-                    forecast.date += ",\nсегодня";
+                    f.Date += ",\nсегодня";
                 else if (date.Day == DateTime.Now.AddDays(1).Day)
-                    forecast.date += ",\nзавтра";
+                    f.Date += ",\nзавтра";
                 else
-                    forecast.date += (",\n" + date.ToString("dddd", new CultureInfo("ru-RU")));
-                forecast.parts.night.condition = Condition[forecast.parts.night.condition];
-                forecast.parts.morning.condition = Condition[forecast.parts.morning.condition];
-                forecast.parts.day.condition = Condition[forecast.parts.day.condition];
-                forecast.parts.evening.condition = Condition[forecast.parts.evening.condition];
+                    f.Date += (",\n" + date.ToString("dddd", new CultureInfo("ru-RU")));
+                foreach(var p in f.Parts)
+                {
+                    p.Condition = Condition[p.Condition];
+                }
             }
             model.Status = "Прогноз погоды на сегодня";
 

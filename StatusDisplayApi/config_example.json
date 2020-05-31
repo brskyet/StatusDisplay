@@ -1,4 +1,4 @@
-# This json must be renamed to "config.json"! And values must be filled. And these values doesn't valid.
+// This json must be renamed to "config.json"! And values must be filled. And these values doesn't valid.
 {
 	yandex_weather_key: "sometext",
 	yandex_weather_lat: "32.3123235",

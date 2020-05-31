@@ -1,9 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media;
-using Avalonia.Styling;
-using StatusDisplayClient.Services;
 using StatusDisplayClient.ViewModels;
 
 namespace StatusDisplayClient

@@ -22,13 +22,15 @@
       <Setter Property="FontSize" Value="60"/>
     </Style>
     <Style Selector="TextBlock.LongRead">
-      <Setter Property="FontSize" Value="17"/>
+      <Setter Property="FontSize" Value="20"/>
       <Setter Property="HorizontalAlignment" Value="Left"/>
       <Setter Property="VerticalAlignment" Value="Top"/>
       <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
     <Style Selector="TextBlock.ToDoList">
       <Setter Property="Margin" Value="10,0,0,0"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
+      <Setter Property="Width" Value="350"/>
     </Style>
     <Style Selector="TextBox">
       <Setter Property="FontSize" Value="20"/>
@@ -68,18 +70,18 @@
         <StackPanel Grid.Row="1">
           <Button Command="{Binding OnWeatherClicked}" Height="220" Background="{Binding WidgetColor.WeatherColor}" BorderThickness="0">
             <StackPanel>
-              <TextBlock Text="{Binding WeatherModel.Status}" Margin="5,20,0,0"/>
-              <Grid ColumnDefinitions="250,100" RowDefinitions="Auto,Auto,Auto,Auto,Auto" Margin="5">
+              <TextBlock Text="{Binding WeatherModel.Status}" Margin="0,20,0,0"/>
+              <Grid ColumnDefinitions="210,140" RowDefinitions="Auto,Auto,Auto,Auto,Auto" Margin="5">
                 <TextBlock Text="Температура" Grid.Row="0" Grid.Column="0"/>
-                <TextBlock Text="{Binding WeatherModel.fact.temp}" Grid.Row="0" Grid.Column="1"/>
+                <TextBlock Text="{Binding WeatherModel.Facts.Temp}" Grid.Row="0" Grid.Column="1"/>
                 <TextBlock Text="Ощущается как" Grid.Row="1" Grid.Column="0"/>
-                <TextBlock Text="{Binding WeatherModel.fact.feels_like}" Grid.Row="1" Grid.Column="1"/>
-                <TextBlock Text="Скорость ветра" Grid.Row="2" Grid.Column="0"/>
-                <TextBlock Text="{Binding WeatherModel.fact.wind_speed}" Grid.Row="2" Grid.Column="1"/>
+                <TextBlock Text="{Binding WeatherModel.Facts.Feels_like}" Grid.Row="1" Grid.Column="1"/>
+                <TextBlock Text="УФ-индекс" Grid.Row="2" Grid.Column="0"/>
+                <TextBlock Text="{Binding WeatherModel.Facts.UvIndex}" Grid.Row="2" Grid.Column="1"/>
                 <TextBlock Text="Давление" Grid.Row="3" Grid.Column="0"/>
-                <TextBlock Text="{Binding WeatherModel.fact.pressure_mm}" Grid.Row="3" Grid.Column="1"/>
+                <TextBlock Text="{Binding WeatherModel.Facts.Pressure_mm}" Grid.Row="3" Grid.Column="1"/>
                 <TextBlock Text="Влажность воздуха" Grid.Row="4" Grid.Column="0"/>
-                <TextBlock Text="{Binding WeatherModel.fact.humidity}" Grid.Row="4" Grid.Column="1"/>
+                <TextBlock Text="{Binding WeatherModel.Facts.Humidity}" Grid.Row="4" Grid.Column="1"/>
               </Grid>
             </StackPanel>
           </Button>
@@ -99,7 +101,7 @@
 
             <TextBox Text="{Binding TimerModel.Minutes}" Width="40" x:Name="MinutesField" Classes="Timer">
               <i:Interaction.Behaviors>
-                <ia:EventTriggerBehavior EventName="PointerWheelChanged" SourceObject="{Binding #MinutesField}">
+                <ia:EventTriggerBehavior EventName="PointerMoved" SourceObject="{Binding #MinutesField}">
                   <ia:CallMethodAction TargetObject="{Binding}" MethodName="MinutesScroll" />
                 </ia:EventTriggerBehavior>
               </i:Interaction.Behaviors>
@@ -156,8 +158,8 @@
           <Button Command="{Binding OnNewsClicked}" Height="100" Background="{Binding WidgetColor.NewsColor}" BorderThickness="0">
             <ScrollViewer VerticalScrollBarVisibility="Hidden">
               <StackPanel>
-                <TextBlock Text="{Binding NewsModel.LatestTitle}" Classes="LongRead" Width="400"/>
-                <TextBlock Text="{Binding NewsModel.LatestDescription}" Classes="LongRead" Width="400"/>
+                <TextBlock Text="{Binding NewsModel.LatestTitle}" Classes="LongRead" Width="390"/>
+                <TextBlock Text="{Binding NewsModel.LatestDescription}" Classes="LongRead" Width="390"/>
               </StackPanel>
             </ScrollViewer>
           </Button>

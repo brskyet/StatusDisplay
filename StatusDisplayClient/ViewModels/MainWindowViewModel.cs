@@ -154,13 +154,13 @@ namespace StatusDisplayClient.ViewModels
             WeatherModel = new WeatherModel
             {
                 Status = "Weather forecast is loading...",
-                fact = new Fact
+                Facts = new Facts
                 {
-                    temp = "Loading...",
-                    feels_like = "Loading...",
-                    humidity = "Loading...",
-                    pressure_mm = "Loading...",
-                    wind_speed = "Loading..."
+                    Temp = "Loading...",
+                    Feels_like = "Loading...",
+                    Humidity = "Loading...",
+                    Pressure_mm = "Loading...",
+                    UvIndex = "Loading..."
                 }
             };
 
@@ -265,7 +265,7 @@ namespace StatusDisplayClient.ViewModels
             try
             {
                 var model = await Task.Run(News.GetNews);
-                if(model.Index[0].Time.CompareTo(model.Games[0].Time) > 0)
+                if (model.Index[0].Time.CompareTo(model.Games[0].Time) > 0)
                 {
                     model.LatestTitle = model.Index[0].Time.ToString() + ": " + model.Index[0].Title;
                     model.LatestDescription = model.Index[0].Description;
@@ -332,17 +332,61 @@ namespace StatusDisplayClient.ViewModels
             try
             {
                 var model = await Task.Run(Forecast.GetForecast);
-                model.fact.temp += "°";
-                model.fact.feels_like += "°";
-                model.fact.wind_speed += " м/с";
-                model.fact.pressure_mm += " мм рт.ст.";
-                model.fact.humidity += "%";
+                model.Facts.Temp += "°";
+                model.Facts.Feels_like += "°";
+                model.Facts.UvIndex += model.Facts.UvIndex switch
+                {
+                    string uv when (int.Parse(uv) < 3) => ", низкий",
+                    string uv when (int.Parse(uv) < 6) => ", средний",
+                    string uv when (int.Parse(uv) < 8) => ", высокий",
+                    string uv when (int.Parse(uv) < 11) => ", опасный",
+                    string uv when (int.Parse(uv) < 20) => ", сиди дома",
+                    _ => "не определен",
+                };
+                foreach(var f in model.Forecasts)
+                {
+                    f.UvIndex += f.UvIndex switch
+                    {
+                        string uv when (int.Parse(uv) < 3) => ", низкий",
+                        string uv when (int.Parse(uv) < 6) => ", средний",
+                        string uv when (int.Parse(uv) < 8) => ", высокий",
+                        string uv when (int.Parse(uv) < 11) => ", опасный",
+                        string uv when (int.Parse(uv) < 20) => ", сиди дома",
+                        _ => "не определен",
+                    };
+                    foreach(var p in f.Parts)
+                    {
+                        if (int.Parse(p.Temp_min) > 0)
+                            p.Temp_min = "+" + p.Temp_min + "°";
+                        else
+                            p.Temp_min += "°";
+                        if (int.Parse(p.Temp_max) > 0)
+                            p.Temp_max = "+" + p.Temp_max + "°";
+                        else
+                            p.Temp_max += "°";
+                        p.Temp_str = p.Temp_min + "..." + p.Temp_max;
+
+                        p.Prec_prob += "%";
+                        p.Humidity += "%";
+
+                        if (int.Parse(p.Feels_like) > 0)
+                            p.Feels_like = "+" + p.Feels_like + "°";
+                        else
+                            p.Feels_like += "°";
+                    }
+                }
+                model.Facts.Pressure_mm += " мм рт.ст.";
+                model.Facts.Humidity += "%";
                 WeatherModel = model;
             }
             catch
             {
-                var model = new WeatherModel { Status = "Weather forecast: an error was occurred", 
-                    fact = WeatherModel.fact, forecasts = WeatherModel.forecasts };
+                var model = new WeatherModel
+                {
+                    Status = "Weather forecast: an error was occurred",
+                    Facts = WeatherModel.Facts,
+                    Forecasts = WeatherModel.Forecasts
+                };
                 WeatherModel = model;
             }
         }
@@ -494,7 +538,7 @@ namespace StatusDisplayClient.ViewModels
                     EngWordColor = SolidColorBrush.Parse("#393E41")
                 };
             displayFlash++;
-            if(displayFlash >= 12)
+            if (displayFlash >= 12)
             {
                 displayFlash = 0;
                 timerFlash.Stop();

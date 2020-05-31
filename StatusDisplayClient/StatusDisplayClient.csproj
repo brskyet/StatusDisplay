@@ -19,17 +19,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="EngWordExtended.xaml" />
+    <None Remove="fullscreen.sh" />
     <None Remove="Thumbs.db" />
     <None Remove="Views\EngWordExtended.xaml" />
     <None Remove="Views\NewsExtended.xaml" />
     <None Remove="Views\WeatherExtended.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.9.9" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.9.9" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.9" />
-    <PackageReference Include="Avalonia.Skia" Version="0.9.9" />
-    <PackageReference Include="Avalonia.X11" Version="0.9.9" />
+    <PackageReference Include="Avalonia" Version="0.9.10" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.9.10" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.10" />
+    <PackageReference Include="Avalonia.Skia" Version="0.9.10" />
+    <PackageReference Include="Avalonia.X11" Version="0.9.10" />
     <PackageReference Include="Avalonia.Xaml.Behaviors" Version="0.9.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="ReactiveUI" Version="11.2.3" />
