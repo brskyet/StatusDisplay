@@ -21,13 +21,13 @@ Almost all of the elements are interractive. Time gets from current OS. Weather 
 You are able to set time on timer, which is below weather forcast. Also you can scroll list of tasks in right upper corner and mark some of them as complete. This list takes from [Trello](https://trello.com/) API. Below todo list there is latest news from various resources. If you touch this element you can see extended list of news:
 
 <p align="center">
- <img width="800" height="450" align="center" src="https://funkyimg.com/i/35ipj.png">
+ <img width="800" height="450" align="center" src="https://funkyimg.com/i/35ipk.png">
 </p>
 
-And last element is «Word of the day» from [Wordnik](https://www.wordnik.com/word-of-the-day) API. Extended widget looks like this:
+And last element is «Word of the day» from [Wordnik](https://www.wordnik.com/word-of-the-day) API, which is translated by [Yandex.Translate](https://translate.yandex.ru/). Extended widget looks like this:
 
 <p align="center">
- <img width="800" height="450" align="center" src="https://funkyimg.com/i/35ipk.png">
+ <img width="800" height="450" align="center" src="https://funkyimg.com/i/35ipj.png">
 </p>
 
 ## Technology stack
