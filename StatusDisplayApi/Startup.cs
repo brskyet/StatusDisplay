@@ -29,11 +29,11 @@ namespace StatusDisplayApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddSingleton<IWeather, Weather>();
-            services.AddSingleton<IToDoList, ToDoList>();
-            services.AddSingleton<IEngWord, EngWord>();
-            services.AddSingleton<ITranslate, Translate>();
-            services.AddSingleton<INews, News>();
+            services.AddScoped<IWeather, Weather>();
+            services.AddScoped<IToDoList, ToDoList>();
+            services.AddScoped<IEngWord, EngWord>();
+            services.AddScoped<ITranslate, Translate>();
+            services.AddScoped<INews, News>();
 
             var mappingConfig = new MapperConfiguration(mc =>
             {
