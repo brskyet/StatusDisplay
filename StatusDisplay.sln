@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StatusDisplayApi", "StatusDisplayApi\StatusDisplayApi.csproj", "{6C512977-B24C-4B49-ADA5-4EEBF03A0BA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatusDisplayClient", "StatusDisplayClient\StatusDisplayClient.csproj", "{194DF423-A6F7-4E05-9933-F828DDEA6FC7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C512977-B24C-4B49-ADA5-4EEBF03A0BA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C512977-B24C-4B49-ADA5-4EEBF03A0BA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C512977-B24C-4B49-ADA5-4EEBF03A0BA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C512977-B24C-4B49-ADA5-4EEBF03A0BA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{194DF423-A6F7-4E05-9933-F828DDEA6FC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{194DF423-A6F7-4E05-9933-F828DDEA6FC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{194DF423-A6F7-4E05-9933-F828DDEA6FC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{194DF423-A6F7-4E05-9933-F828DDEA6FC7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {708FFF73-BBAD-4FD5-B3F5-990A7811C3FF}
+	EndGlobalSection
+EndGlobal
