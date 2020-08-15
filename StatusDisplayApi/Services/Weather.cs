@@ -20,7 +20,7 @@ namespace StatusDisplayApi.Services
 
         public Weather(IMapper mapper)
         {
-            string config = File.ReadAllText(path);
+            var config = File.ReadAllText(path);
             config_json = JsonConvert.DeserializeObject<ConfigJson>(config);
 
             _mapper = mapper;
@@ -28,25 +28,24 @@ namespace StatusDisplayApi.Services
 
         public WeatherModel GetForecast()
         {
-            WebRequest request = WebRequest.Create($"https://api.weather.yandex.ru/v1/forecast?" +
-                $"lat={config_json.yandex_weather_lat}&lon={config_json.yandex_weather_lon}&lang=en_US");
+            var request = WebRequest.Create($"https://api.weather.yandex.ru/v1/forecast?" +
+                                            $"lat={config_json.yandex_weather_lat}&lon={config_json.yandex_weather_lon}&lang=en_US");
             request.Headers.Add($"X-Yandex-API-Key: {config_json.yandex_weather_key}");
-            WebResponse response = request.GetResponse();
+            var response = request.GetResponse();
             WeatherModelDto resultDto;
-            using (Stream dataStream = response.GetResponseStream())
+            using (var dataStream = response.GetResponseStream())
             {
-                StreamReader reader = new StreamReader(dataStream);
-                string json = reader.ReadToEnd();
+                var reader = new StreamReader(dataStream);
+                var json = reader.ReadToEnd();
                 resultDto = JsonConvert.DeserializeObject<WeatherModelDto>(json);
             }
             response.Close();
 
-            WeatherModel result = new WeatherModel()
+            var result = new WeatherModel
             {
-                Forecasts = new List<Forecast>()
+                Forecasts = new List<Forecast>(), Facts = _mapper.Map<Facts>(resultDto.Fact)
             };
             // facts doesn't changes
-            result.Facts = _mapper.Map<Facts>(resultDto.Fact);
             foreach(var f in resultDto.Forecasts)
             {
                 result.Forecasts.Add(new Forecast()
@@ -67,7 +66,7 @@ namespace StatusDisplayApi.Services
             // remove night from 1st day, because it's actually previous day
             result.Forecasts[0].Parts.RemoveAt(0);
             // now we need to take night from next day and put it in current day
-            for(int i = result.Forecasts.Count - 1; i > 0 ; i--)
+            for(var i = result.Forecasts.Count - 1; i > 0 ; i--)
             {
                 result.Forecasts[i - 1].Parts.Add(result.Forecasts[i].Parts[0]);
                 // don't forget to remove this part of day
@@ -76,7 +75,7 @@ namespace StatusDisplayApi.Services
                 result.Forecasts[i].UvIndex = resultDto.Forecasts[i].Parts.Day.Uv_index;
             }
 
-            for (int i = 0; i <= result.Forecasts.Count - 1; i++)
+            for (var i = 0; i <= result.Forecasts.Count - 1; i++)
             {
                 // at noon uv index is the most high
                 result.Forecasts[i].UvIndex = resultDto.Forecasts[i].Parts.Day.Uv_index;

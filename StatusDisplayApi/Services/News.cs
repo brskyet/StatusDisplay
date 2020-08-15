@@ -16,23 +16,23 @@ namespace StatusDisplayApi.Services
     {
         public NewsModel GetNews()
         {
-            string indexURL = "https://news.yandex.ru/index.rss";
-            string gamesURL = "https://dtf.ru/rss/all";
-            return new NewsModel() { Index = GetCategory(indexURL), Games = GetCategory(gamesURL) };
+            const string indexUrl = "https://news.yandex.ru/index.rss";
+            const string gamesUrl = "https://dtf.ru/rss/all";
+            return new NewsModel() { Index = GetCategory(indexUrl), Games = GetCategory(gamesUrl) };
         }
 
         private List<SingleNews> GetCategory(string url)
         {
-            WebRequest request = WebRequest.Create(url);
-            WebResponse response = request.GetResponse();
+            var request = WebRequest.Create(url);
+            var response = request.GetResponse();
             string result;
-            using (Stream dataStream = response.GetResponseStream())
+            using (var dataStream = response.GetResponseStream())
             {
-                StreamReader reader = new StreamReader(dataStream);
+                var reader = new StreamReader(dataStream);
                 result = reader.ReadToEnd();
             }
 
-            XDocument doc = XDocument.Parse(result);
+            var doc = XDocument.Parse(result);
             var channel = doc.Descendants("channel").ToList();
 
             var news = channel.Descendants("item").Select(r => new SingleNews()
