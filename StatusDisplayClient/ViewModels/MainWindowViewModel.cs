@@ -149,9 +149,13 @@ namespace StatusDisplayClient.ViewModels
         private readonly DispatcherTimer timerForecast, timerToDo, timerTime, timerTimer, timerFlash, timerEngWord, timerNews;
 
         public event PropertyChangedEventHandler PropertyChanged;
+        
+        private MainWindow MainWindow { get; }
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(MainWindow mainWindow)
         {
+            this.MainWindow = mainWindow;
+            
             // set default values
             WeatherModel = new WeatherModel
             {
@@ -468,6 +472,11 @@ namespace StatusDisplayClient.ViewModels
             {
                 TimerModel = new TimerModel { Hours = TimerModel.Hours, Minutes = TimerModel.Minutes, Seconds = TimerModel.Seconds -= 1 };
             }
+        }
+
+        public void OnClose()
+        {
+            this.MainWindow.Close();
         }
 
         public void OnStartButton()

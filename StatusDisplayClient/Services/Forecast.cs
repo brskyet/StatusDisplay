@@ -3,9 +3,8 @@ using StatusDisplayClient.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Net;
-using System.Text;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace StatusDisplayClient.Services
 {
@@ -34,18 +33,16 @@ namespace StatusDisplayClient.Services
             {"partly-cloudy-and-light-snow", "Небольшой снег, малооблачно"}
         };
 
-        static public WeatherModel GetForecast()
+        public static async Task<WeatherModel> GetForecast()
         {
-            WebRequest request = WebRequest.Create("https://localhost:5001/api/Data/GetForecast");
-            WebResponse response = request.GetResponse();
-            WeatherModel model;
-            using (Stream dataStream = response.GetResponseStream())
+            var client = new HttpClient
             {
-                StreamReader reader = new StreamReader(dataStream);
-                string json = reader.ReadToEnd();
-                model = JsonConvert.DeserializeObject<WeatherModel>(json);
-            }
-            response.Close();
+                BaseAddress = new Uri("http://localhost:5000/api/")
+            };
+
+            var response = await client.GetAsync("Data/GetForecast");
+
+            var model = JsonConvert.DeserializeObject<WeatherModel>(await response.Content.ReadAsStringAsync());
 
             // Replacement default values to readable values
             model.Facts.Condition = Condition[model.Facts.Condition];

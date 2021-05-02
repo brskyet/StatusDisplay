@@ -10,10 +10,7 @@ namespace StatusDisplayClient
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
-#if DEBUG
-            this.AttachDevTools();
-#endif
+            DataContext = new MainWindowViewModel(this);
         }
 
         private void InitializeComponent()
