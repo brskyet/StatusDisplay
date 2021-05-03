@@ -10,7 +10,7 @@ namespace StatusDisplayClient.Views
     {
         public NewsExtended()
         {
-
+            this.InitializeComponent();
         }
         public NewsExtended(NewsModel model)
         {

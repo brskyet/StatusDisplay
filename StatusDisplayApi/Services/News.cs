@@ -14,7 +14,7 @@ namespace StatusDisplayApi.Services
 {
     public class News : INews
     {
-        public NewsModel GetNews()
+        public async Task<NewsModel> GetNews()
         {
             const string indexUrl = "https://news.yandex.ru/index.rss";
             const string gamesUrl = "https://dtf.ru/rss/all";

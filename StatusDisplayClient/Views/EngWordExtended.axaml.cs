@@ -10,7 +10,7 @@ namespace StatusDisplayClient.Views
     {
         public EngWordExtended()
         {
-
+            this.InitializeComponent();
         }
 
         public EngWordExtended(EngTranslatedWordModel model)

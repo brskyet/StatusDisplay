@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace StatusDisplayApi.Models
+﻿namespace StatusDisplayApi.Models
 {
     public class WeatherModelDto
     {
         public FactDto Fact { get; set; }
-        public List<ForecastDto> Forecasts { get; set; }
+        public ForecastDto Forecast { get; set; }
     }
 
     public class FactDto
@@ -23,9 +18,6 @@ namespace StatusDisplayApi.Models
 
     public class ForecastDto
     {
-        public string Date { get; set; }
-        public string Sunrise { get; set; }
-        public string Sunset { get; set; }
         public PartsDto Parts { get; set; }
     }
 

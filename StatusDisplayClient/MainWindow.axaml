@@ -10,8 +10,7 @@
         Background="#1E1E1E"
         WindowState="FullScreen"
         HorizontalAlignment="Left"
-        VerticalAlignment="Top"
-        Topmost="True">
+        VerticalAlignment="Top">
     <Window.Styles>
         <Style Selector="TextBlock">
             <Setter Property="FontSize" Value="22" />
@@ -62,29 +61,52 @@
             <Grid RowDefinitions="200, 400, 200">
 
                 <StackPanel Grid.Row="0" Background="{Binding WidgetColor.TimeColor}">
-                    <TextBlock Text="{Binding DateTimeModel.Time}" Classes="Time" Margin="200,0,0,0" />
-                    <TextBlock Text="{Binding DateTimeModel.Date}" Margin="200,0,0,0" />
+                    <TextBlock Text="{Binding DateTimeModel.Time}" Classes="Time" HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding DateTimeModel.Date}" HorizontalAlignment="Center" />
                 </StackPanel>
 
-                <StackPanel Grid.Row="1">
-                    <Button Command="{Binding OnWeatherClicked}" Height="400"
-                            Background="{Binding WidgetColor.WeatherColor}" BorderThickness="0">
-                        <StackPanel>
-                            <TextBlock Text="{Binding WeatherModel.Status}" Margin="50,0,0,0" />
-                            <Grid ColumnDefinitions="400,240" RowDefinitions="Auto,Auto,Auto,Auto,Auto" Margin="15">
-                                <TextBlock Text="Температура" Grid.Row="0" Grid.Column="0" />
-                                <TextBlock Text="{Binding WeatherModel.Facts.Temp}" Grid.Row="0" Grid.Column="1" />
-                                <TextBlock Text="Ощущается как" Grid.Row="1" Grid.Column="0" />
-                                <TextBlock Text="{Binding WeatherModel.Facts.Feels_like}" Grid.Row="1" Grid.Column="1" />
-                                <TextBlock Text="УФ-индекс" Grid.Row="2" Grid.Column="0" />
-                                <TextBlock Text="{Binding WeatherModel.Facts.UvIndex}" Grid.Row="2" Grid.Column="1" />
-                                <TextBlock Text="Давление" Grid.Row="3" Grid.Column="0" />
-                                <TextBlock Text="{Binding WeatherModel.Facts.Pressure_mm}" Grid.Row="3" Grid.Column="1" />
-                                <TextBlock Text="Влажность воздуха" Grid.Row="4" Grid.Column="0" />
-                                <TextBlock Text="{Binding WeatherModel.Facts.Humidity}" Grid.Row="4" Grid.Column="1" />
-                            </Grid>
+                <StackPanel Grid.Row="1" Background="{Binding WidgetColor.WeatherColor}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding WeatherModel.Status}" Margin="10,0,0,0" />
+                            <TextBlock Text="{Binding WeatherModel.Fact.Temp}" Margin="10,0,0,0" />
+                            <TextBlock Text="{Binding WeatherModel.Fact.Feels_like}" />
+                            <TextBlock Text="{Binding WeatherModel.Fact.Condition}" />
                         </StackPanel>
-                    </Button>
+
+                        <Grid ColumnDefinitions="200,220,220" RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                              Margin="15,15,0,0">
+
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[0].Part_name}" Grid.Row="0"
+                                       Grid.Column="1" />
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[1].Part_name}" Grid.Row="0"
+                                       Grid.Column="2" />
+
+                            <TextBlock Text="Температура" Grid.Row="1" Grid.Column="0" Margin="0,10,0,0" />
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[0].Temp_str}"
+                                       Margin="0,10,0,0" Grid.Row="1" Grid.Column="1" />
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[1].Temp_str}"
+                                       Margin="0,10,0,0" Grid.Row="1" Grid.Column="2" />
+
+                            <TextBlock Text="Ощущается как" Grid.Row="2" Grid.Column="0" Margin="0,10,0,0" />
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[0].Feels_like}"
+                                       Margin="0,10,0,0" Grid.Row="2" Grid.Column="1" />
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[1].Feels_like}"
+                                       Margin="0,10,0,0" Grid.Row="2" Grid.Column="2" />
+
+                            <TextBlock Text="Давление" Grid.Row="3" Grid.Column="0" Margin="0,10,0,0" />
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[0].Pressure_mm}"
+                                       Margin="0,10,0,0" Grid.Row="3" Grid.Column="1" />
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[1].Pressure_mm}"
+                                       Margin="0,10,0,0" Grid.Row="3" Grid.Column="2" />
+
+                            <TextBlock Text="Состояние" Grid.Row="4" Grid.Column="0" Margin="0,10,0,0" />
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[0].Condition}"
+                                       TextWrapping="WrapWithOverflow" Margin="0,10,0,0" Grid.Row="4" Grid.Column="1" />
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[1].Condition}"
+                                       TextWrapping="WrapWithOverflow" Margin="0,10,0,0" Grid.Row="4" Grid.Column="2" />
+                        </Grid>
+                    </StackPanel>
 
                 </StackPanel>
 
@@ -121,11 +143,11 @@
                         <TextBlock Text=" с" VerticalAlignment="Bottom" FontSize="25" />
                     </StackPanel>
 
-                    <StackPanel Orientation="Horizontal" Margin="200,20,0,0">
-                        <Button Content="Отмена" Margin="10,0,0,0" Width="100" Background="#1E1E1E"
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button Content="Отмена" Margin="0,20,0,0" Width="100" Background="#1E1E1E"
                                 IsEnabled="{Binding ButtonStatModel.IsTimerStarted}" Command="{Binding OnCancelButton}"
                                 Classes="StartCancel" />
-                        <Button Margin="10,0,0,0" Classes="StartCancel"
+                        <Button Margin="20,20,0,0" Classes="StartCancel"
                                 Width="100" Background="{Binding ButtonStatModel.ButtonColor}"
                                 Command="{Binding OnStartButton}" x:Name="StartButton">
                             <TextBlock Text="{Binding ButtonStatModel.Text}"
@@ -137,16 +159,17 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1">
-            <Grid RowDefinitions="400, 200, 200">
+            <Grid RowDefinitions="350, 250, 200">
                 <ScrollViewer VerticalScrollBarVisibility="Hidden">
 
                     <StackPanel Grid.Row="0" Background="{Binding WidgetColor.TodoListColor}" Width="640">
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                             <TextBlock Text="{Binding ToDoListModel.Status}" HorizontalAlignment="Center"
-                                       FontSize="25" Width="580" Margin="15,10,0,0"/>
+                                       FontSize="25" Width="550" Margin="15,0,0,0" />
                             <Button Content="X" Width="40" Background="#3f0000" Height="38"
                                     Command="{Binding OnClose}"
-                                    Classes="StartCancel" />
+                                    Classes="StartCancel"
+                                    Margin="10,0,0,0" />
                         </StackPanel>
                         <ItemsControl Items="{Binding ToDoListModel.toDoListItems}" Margin="0,10,0,0">
                             <ItemsControl.ItemTemplate>
@@ -165,7 +188,7 @@
                 </ScrollViewer>
 
                 <StackPanel Grid.Row="1">
-                    <Button Command="{Binding OnNewsClicked}" Height="200" Background="{Binding WidgetColor.NewsColor}"
+                    <Button Command="{Binding OnNewsClicked}" Height="250" Background="{Binding WidgetColor.NewsColor}"
                             BorderThickness="0">
                         <ScrollViewer VerticalScrollBarVisibility="Hidden">
                             <StackPanel>

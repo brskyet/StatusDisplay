@@ -18,7 +18,9 @@ namespace StatusDisplayClient.Services
 
             var response = await client.GetAsync("Data/GetToDoList");
 
-            var result = JsonConvert.DeserializeObject<List<ToDoListItem>>(await response.Content.ReadAsStringAsync());
+            var json = await response.Content.ReadAsStringAsync();
+
+            var result = JsonConvert.DeserializeObject<List<ToDoListItem>>(json);
 
             // Cycle for set checkboxes
             foreach (var item in result)

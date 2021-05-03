@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StatusDisplayApi.Interfaces;
 using StatusDisplayApi.Models;
@@ -29,56 +26,28 @@ namespace StatusDisplayApi.Controllers
         }
 
         [HttpGet("GetForecast")]
-        public IActionResult GetForecast()
+        public async Task<WeatherModel> GetForecast()
         {
-            try
-            {
-                return Ok(_Weather.GetForecast());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return await _Weather.GetForecast();
         }
 
         [HttpGet("GetToDoList")]
-        public IActionResult GetToDoList()
+        public async Task<List<ToDoListModel>> GetToDoList()
         {
-            try
-            {
-                return Ok(_ToDoList.GetToDoList());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return await _ToDoList.GetToDoList();
         }
 
         [HttpGet("GetEngWord")]
-        public IActionResult GetEngWord()
+        public async Task<EngTranslatedWordModel> GetEngWord()
         {
-            try
-            {
-                var originalWord = _EngWord.GetOriginalWord();
-                return Ok(_Translate.GetTranslation(originalWord));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var originalWord = await _EngWord.GetOriginalWord();
+            return await _Translate.GetTranslation(originalWord);
         }
 
         [HttpGet("GetNews")]
-        public IActionResult GetNews()
+        public async Task<NewsModel> GetNews()
         {
-            try
-            {
-                return Ok(_News.GetNews());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return await _News.GetNews();
         }
     }
 }

@@ -2,7 +2,6 @@
 using StatusDisplayClient.Models;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -33,6 +32,14 @@ namespace StatusDisplayClient.Services
             {"partly-cloudy-and-light-snow", "Небольшой снег, малооблачно"}
         };
 
+        static readonly Dictionary<string, string> PartOfDay = new Dictionary<string, string>
+        {
+            {"night", "Ночь"},
+            {"morning", "Утро"},
+            {"day", "День"},
+            {"evening", "Вечер"}
+        };
+
         public static async Task<WeatherModel> GetForecast()
         {
             var client = new HttpClient
@@ -42,26 +49,19 @@ namespace StatusDisplayClient.Services
 
             var response = await client.GetAsync("Data/GetForecast");
 
-            var model = JsonConvert.DeserializeObject<WeatherModel>(await response.Content.ReadAsStringAsync());
+            var json = await response.Content.ReadAsStringAsync();
+
+            var model = JsonConvert.DeserializeObject<WeatherModel>(json);
 
             // Replacement default values to readable values
-            model.Facts.Condition = Condition[model.Facts.Condition];
-            foreach (var f in model.Forecasts)
+            model.Fact.Condition = Condition[model.Fact.Condition];
+            foreach (var p in model.Forecast.Parts)
             {
-                var date = DateTime.Parse(f.Date);
-                f.Date = date.ToLongDateString();
-                if (date.Day == DateTime.Now.Day)
-                    f.Date += ",\nсегодня";
-                else if (date.Day == DateTime.Now.AddDays(1).Day)
-                    f.Date += ",\nзавтра";
-                else
-                    f.Date += (",\n" + date.ToString("dddd", new CultureInfo("ru-RU")));
-                foreach(var p in f.Parts)
-                {
-                    p.Condition = Condition[p.Condition];
-                }
+                p.Condition = Condition[p.Condition];
+                p.Part_name = PartOfDay[p.Part_name];
             }
-            model.Status = "Прогноз погоды на сегодня";
+
+            model.Status = "Сейчас на улице:";
 
             return model;
         }
