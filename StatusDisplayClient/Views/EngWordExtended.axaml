@@ -9,7 +9,8 @@
         WindowState="FullScreen"
         HorizontalAlignment = "Left"
         VerticalAlignment = "Top"
-        Topmost="True">
+        Topmost="True"
+        Cursor="None">
   <Window.Styles>
     <Style Selector="TextBlock">
       <Setter Property = "Foreground" Value = "#D1CBD9" />
@@ -44,7 +45,7 @@
   </Window.Styles>
   <Button Width="1280" Height="800" Background="#393E41" Command="{Binding OnCloseButton}" BorderThickness="0">
     <Grid ColumnDefinitions="640, 640">
-      <ScrollViewer VerticalScrollBarVisibility="Hidden" Width="640" Grid.Column="0">
+      <ScrollViewer VerticalScrollBarVisibility="Hidden" Height="800" Width="640" Grid.Column="0">
         <StackPanel Background="#33131F">
           <StackPanel Orientation="Horizontal" Margin="15,0,0,0">
             <TextBlock Text="Word of the day: " Classes="Headers" Foreground="#D1CBD9"/>
@@ -52,7 +53,7 @@
           </StackPanel>
 
           <Border Classes="EngWordBorder">
-            <StackPanel>
+            <StackPanel >
               <TextBlock Classes="EngWord" Text="Definitions"/>
               <ItemsControl Items="{Binding EngTranslatedWordModel.definitions}">
                 <ItemsControl.ItemTemplate>
@@ -91,7 +92,7 @@
         </StackPanel>
       </ScrollViewer>
 
-      <ScrollViewer VerticalScrollBarVisibility="Hidden" Width="640" Grid.Column="1">
+      <ScrollViewer VerticalScrollBarVisibility="Hidden"  Height="800" Width="640" Grid.Column="1">
         <StackPanel Background="#121B2E">
           <StackPanel Orientation="Horizontal" Margin="15,0,0,0">
             <TextBlock Text="Слово дня: " Classes="Headers" Foreground="#D1CBD9"/>

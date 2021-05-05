@@ -10,7 +10,8 @@
         Background="#1E1E1E"
         WindowState="FullScreen"
         HorizontalAlignment="Left"
-        VerticalAlignment="Top">
+        VerticalAlignment="Top"
+        Cursor="None">
     <Window.Styles>
         <Style Selector="TextBlock">
             <Setter Property="FontSize" Value="22" />
@@ -67,15 +68,15 @@
 
                 <StackPanel Grid.Row="1" Background="{Binding WidgetColor.WeatherColor}">
                     <StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Margin="5,10,0,0">
                             <TextBlock Text="{Binding WeatherModel.Status}" Margin="10,0,0,0" />
                             <TextBlock Text="{Binding WeatherModel.Fact.Temp}" Margin="10,0,0,0" />
                             <TextBlock Text="{Binding WeatherModel.Fact.Feels_like}" />
-                            <TextBlock Text="{Binding WeatherModel.Fact.Condition}" />
                         </StackPanel>
+                        <TextBlock Text="{Binding WeatherModel.Fact.Condition}" Margin="15,10,0,0"/>
 
                         <Grid ColumnDefinitions="200,220,220" RowDefinitions="Auto,Auto,Auto,Auto,Auto"
-                              Margin="15,15,0,0">
+                              Margin="15,25,0,0">
 
                             <TextBlock Text="{Binding WeatherModel.Forecast.Parts[0].Part_name}" Grid.Row="0"
                                        Grid.Column="1" />
@@ -176,7 +177,7 @@
                                 <DataTemplate>
                                     <StackPanel>
                                         <Separator Classes="Main" />
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                                             <CheckBox Margin="20,7,0,0" IsChecked="{Binding IsChecked}" />
                                             <TextBlock Text="{Binding name}" Classes="ToDoList" />
                                         </StackPanel>

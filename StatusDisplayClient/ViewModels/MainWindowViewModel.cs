@@ -337,7 +337,7 @@ namespace StatusDisplayClient.ViewModels
             {
                 var model = await Task.Run(Forecast.GetForecast);
                 // minor edits for beauty
-                model.Fact.Condition = $". {model.Fact.Condition}.";
+                model.Fact.Condition = $"{model.Fact.Condition}";
                 model.Fact.Temp += "°";
                 model.Fact.Feels_like = $" ({model.Fact.Feels_like}°)";
                 
