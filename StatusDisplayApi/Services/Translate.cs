@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace StatusDisplayApi.Services
@@ -25,11 +25,11 @@ namespace StatusDisplayApi.Services
             _mapper = mapper;
         }
 
-        public EngTranslatedWordModel GetTranslation(EngWordModel engWordModel)
+        public async Task<EngTranslatedWordModel> GetTranslation(EngWordModel engWordModel)
         {
             var translationModel = _mapper.Map<EngTranslatedWordModel>(engWordModel);
 
-            translationModel.TranslatedWord = CallToTranslateApi(translationModel.word);
+            translationModel.TranslatedWord = await CallToTranslateApi(translationModel.word);
             translationModel.TranslatedDefinitions = new List<TranslatedDefinition>();
             translationModel.TranslatedExamples = new List<TranslatedExample>();
 
@@ -39,8 +39,8 @@ namespace StatusDisplayApi.Services
                 d.Index = index;
                 translationModel.TranslatedDefinitions.Add(new TranslatedDefinition
                 {
-                    Text = CallToTranslateApi(d.text),
-                    PartOfSpeech = CallToTranslateApi(d.partOfSpeech),
+                    Text = await CallToTranslateApi(d.text),
+                    PartOfSpeech = await CallToTranslateApi(d.partOfSpeech),
                     Index = index
                 });
                 index++;
@@ -53,8 +53,8 @@ namespace StatusDisplayApi.Services
                 e.Index = index;
                 translationModel.TranslatedExamples.Add(new TranslatedExample
                 {
-                    Text = CallToTranslateApi(e.text),
-                    Title = CallToTranslateApi(e.title),
+                    Text = await CallToTranslateApi(e.text),
+                    Title = await CallToTranslateApi(e.title),
                     Index = index
                 });
                 index++;
@@ -63,24 +63,36 @@ namespace StatusDisplayApi.Services
             return translationModel;
         }
 
-        private string CallToTranslateApi(string text)
+        private async Task<string> CallToTranslateApi(string text)
         {
-            if (text == "" || text == null)
-                return "";
-            WebRequest request = WebRequest.Create(
-                $"https://translate.yandex.net/api/v1.5/tr.json/translate?key={config_json.yandex_translate_key}" +
-                $"&text={text.Replace(';', '.')}&lang={config_json.yandex_translate_lang}");
-            WebResponse response = request.GetResponse();
-            TranslationModel result;
-            using (Stream dataStream = response.GetResponseStream())
+            try
             {
-                StreamReader reader = new StreamReader(dataStream);
-                string json = reader.ReadToEnd();
-                result = JsonConvert.DeserializeObject<TranslationModel>(json);
-            }
-            response.Close();
+                if (string.IsNullOrEmpty(text))
+                    return "";
 
-            return result.text.First();
+                var client = new HttpClient
+                {
+                    BaseAddress = new Uri(
+                        $"https://translate.yandex.net/api/v1.5/tr.json/translate?key={config_json.yandex_translate_key}" +
+                        $"&text={text.Replace(';', '.')}&lang={config_json.yandex_translate_lang}")
+                };
+
+                var response = await client.GetAsync("");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
+
+                var result = JsonConvert.DeserializeObject<TranslationModel>(await response.Content.ReadAsStringAsync());
+
+                return result.text.First();
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+            
         }
     }
 }

@@ -4,183 +4,222 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
         xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="800"
         x:Class="StatusDisplayClient.MainWindow"
         Title="StatusDisplayClient"
         Background="#1E1E1E"
-        HasSystemDecorations="False"
-        WindowState="Maximized"
-        HorizontalAlignment = "Left"
-        VerticalAlignment = "Top"
-        Topmost="True">
-  <Window.Styles>
-    <Style Selector="TextBlock">
-      <Setter Property="FontSize" Value="22"/>
-      <Setter Property = "Foreground" Value = "#D1CBD9" />
-    </Style>
-    <Style Selector="TextBlock.Time">
-      <Setter Property="FontSize" Value="60"/>
-    </Style>
-    <Style Selector="TextBlock.LongRead">
-      <Setter Property="FontSize" Value="20"/>
-      <Setter Property="HorizontalAlignment" Value="Left"/>
-      <Setter Property="VerticalAlignment" Value="Top"/>
-      <Setter Property="TextWrapping" Value="Wrap"/>
-    </Style>
-    <Style Selector="TextBlock.ToDoList">
-      <Setter Property="Margin" Value="10,0,0,0"/>
-      <Setter Property="TextWrapping" Value="Wrap"/>
-      <Setter Property="Width" Value="350"/>
-    </Style>
-    <Style Selector="TextBox">
-      <Setter Property="FontSize" Value="20"/>
-    </Style>
-    <Style Selector="Button.StartCancel /template/ ContentPresenter">
-      <Setter Property="CornerRadius" Value="20"/>
-      <Setter Property="BorderThickness" Value="0"/>
-    </Style>
-    <Style Selector="TextBox.Timer">
-      <Setter Property="Background" Value="{Binding WidgetColor.TimerColor}"/>
-      <Setter Property="Foreground" Value="#E0E0E0"/>
-      <Setter Property="Padding" Value="10,5,0,0"/>
-      <Setter Property="FontSize" Value="25"/>
-    </Style>
-    <Style Selector="Border.Main">
-      <Setter Property="BorderBrush" Value="#797A95"/>
-      <Setter Property="BorderThickness" Value="2"/>
-      <Setter Property="CornerRadius" Value="7"/>
-      <Setter Property="Width" Value="380"/>
-      <Setter Property="Margin" Value="0,5,0,0"/>
-    </Style>
-    <Style Selector="Separator.Main">
-      <Setter Property="Height" Value="2"/>
-      <Setter Property="Width" Value="400"/>
-      <Setter Property="Background" Value="#797A95"/>
-    </Style>
-  </Window.Styles>
-  <Grid ColumnDefinitions="400, 400">
-    <StackPanel Grid.Column="0">
-      <Grid RowDefinitions="120, 220, 110">
+        WindowState="FullScreen"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top"
+        Cursor="None">
+    <Window.Styles>
+        <Style Selector="TextBlock">
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="Foreground" Value="#D1CBD9" />
+        </Style>
+        <Style Selector="TextBlock.Time">
+            <Setter Property="FontSize" Value="100" />
+        </Style>
+        <Style Selector="TextBlock.LongRead">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <Style Selector="TextBlock.ToDoList">
+            <Setter Property="Margin" Value="10,0,0,0" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Width" Value="640" />
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="FontSize" Value="20" />
+        </Style>
+        <Style Selector="Button.StartCancel /template/ ContentPresenter">
+            <Setter Property="CornerRadius" Value="20" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        <Style Selector="TextBox.Timer">
+            <Setter Property="Background" Value="{Binding WidgetColor.TimerColor}" />
+            <Setter Property="Foreground" Value="#E0E0E0" />
+            <Setter Property="Padding" Value="10,5,0,0" />
+            <Setter Property="FontSize" Value="25" />
+        </Style>
+        <Style Selector="Border.Main">
+            <Setter Property="BorderBrush" Value="#797A95" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="CornerRadius" Value="7" />
+            <Setter Property="Width" Value="640" />
+            <Setter Property="Margin" Value="0,5,0,0" />
+        </Style>
+        <Style Selector="Separator.Main">
+            <Setter Property="Height" Value="2" />
+            <Setter Property="Width" Value="640" />
+            <Setter Property="Background" Value="#797A95" />
+        </Style>
+    </Window.Styles>
+    <Grid ColumnDefinitions="640, 640">
+        <StackPanel Grid.Column="0">
+            <Grid RowDefinitions="200, 400, 200">
 
-        <StackPanel Grid.Row="0" Background="{Binding WidgetColor.TimeColor}">
-          <TextBlock Text="{Binding DateTimeModel.Time}" Classes="Time"/>
-          <TextBlock Text="{Binding DateTimeModel.Date}" Margin="5,0,0,0"/>
-        </StackPanel>
-
-        <StackPanel Grid.Row="1">
-          <Button Command="{Binding OnWeatherClicked}" Height="220" Background="{Binding WidgetColor.WeatherColor}" BorderThickness="0">
-            <StackPanel>
-              <TextBlock Text="{Binding WeatherModel.Status}" Margin="0,20,0,0"/>
-              <Grid ColumnDefinitions="210,140" RowDefinitions="Auto,Auto,Auto,Auto,Auto" Margin="5">
-                <TextBlock Text="Температура" Grid.Row="0" Grid.Column="0"/>
-                <TextBlock Text="{Binding WeatherModel.Facts.Temp}" Grid.Row="0" Grid.Column="1"/>
-                <TextBlock Text="Ощущается как" Grid.Row="1" Grid.Column="0"/>
-                <TextBlock Text="{Binding WeatherModel.Facts.Feels_like}" Grid.Row="1" Grid.Column="1"/>
-                <TextBlock Text="УФ-индекс" Grid.Row="2" Grid.Column="0"/>
-                <TextBlock Text="{Binding WeatherModel.Facts.UvIndex}" Grid.Row="2" Grid.Column="1"/>
-                <TextBlock Text="Давление" Grid.Row="3" Grid.Column="0"/>
-                <TextBlock Text="{Binding WeatherModel.Facts.Pressure_mm}" Grid.Row="3" Grid.Column="1"/>
-                <TextBlock Text="Влажность воздуха" Grid.Row="4" Grid.Column="0"/>
-                <TextBlock Text="{Binding WeatherModel.Facts.Humidity}" Grid.Row="4" Grid.Column="1"/>
-              </Grid>
-            </StackPanel>
-          </Button>
-
-        </StackPanel>
-
-        <StackPanel Grid.Row="2" Background="{Binding WidgetColor.TimerColor}">
-          <StackPanel Orientation="Horizontal" Margin="20,10,0,0">
-            <TextBox Text="{Binding TimerModel.Hours}" Width="40" x:Name="HoursField" Classes="Timer">
-              <i:Interaction.Behaviors>
-                <ia:EventTriggerBehavior EventName="PointerWheelChanged" SourceObject="{Binding #HoursField}">
-                  <ia:CallMethodAction TargetObject="{Binding}" MethodName="HoursScroll" />
-                </ia:EventTriggerBehavior>
-              </i:Interaction.Behaviors>
-            </TextBox>
-            <TextBlock Text=" ч " VerticalAlignment="Bottom"  FontSize="25"/>
-
-            <TextBox Text="{Binding TimerModel.Minutes}" Width="40" x:Name="MinutesField" Classes="Timer">
-              <i:Interaction.Behaviors>
-                <ia:EventTriggerBehavior EventName="PointerWheelChanged" SourceObject="{Binding #MinutesField}">
-                  <ia:CallMethodAction TargetObject="{Binding}" MethodName="MinutesScroll" />
-                </ia:EventTriggerBehavior>
-              </i:Interaction.Behaviors>
-            </TextBox>
-            <TextBlock Text=" мин " VerticalAlignment="Bottom" FontSize="25"/>
-
-            <TextBox Text="{Binding TimerModel.Seconds}" Width="40" x:Name="SecondsField" Classes="Timer">
-              <i:Interaction.Behaviors>
-                <ia:EventTriggerBehavior EventName="PointerWheelChanged" SourceObject="{Binding #SecondsField}">
-                  <ia:CallMethodAction TargetObject="{Binding}" MethodName="SecondsScroll" />
-                </ia:EventTriggerBehavior>
-              </i:Interaction.Behaviors>
-            </TextBox>
-            <TextBlock Text=" с" VerticalAlignment="Bottom" FontSize="25"/>
-          </StackPanel>
-
-          <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
-            <Button Content="Отмена" Margin="10,0,0,0" Width="100" Background="#1E1E1E"
-                    IsEnabled="{Binding ButtonStatModel.IsTimerStarted}" Command="{Binding OnCancelButton}"
-                    Classes="StartCancel"/>
-            <Button Margin="10,0,0,0" Classes="StartCancel"
-                    Width="100" Background="{Binding ButtonStatModel.ButtonColor}"
-                    Command="{Binding OnStartButton}" x:Name="StartButton">
-              <TextBlock Text="{Binding ButtonStatModel.Text}" Foreground="{Binding ButtonStatModel.TextColor}"/>
-            </Button>
-          </StackPanel>
-        </StackPanel>
-      </Grid>
-    </StackPanel>
-
-    <StackPanel Grid.Column="1">
-      <Grid RowDefinitions="250, 100, 100">
-        <ScrollViewer VerticalScrollBarVisibility="Hidden">
-          <StackPanel Grid.Row="0" Background="{Binding WidgetColor.TodoListColor}" Width="400">
-            <TextBlock Text="{Binding ToDoListModel.Status}" HorizontalAlignment="Center"
-                       FontSize="25" Width="380"/>
-            <ItemsControl Items="{Binding ToDoListModel.toDoListItems}" Margin="0,10,0,0">
-              <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                  <StackPanel>
-                    <Separator Classes="Main"/>
-                    <StackPanel Orientation="Horizontal">
-                      <CheckBox Margin="20,7,0,0" IsChecked="{Binding IsChecked}"/>
-                      <TextBlock Text="{Binding name}" Classes="ToDoList"/>
-                    </StackPanel>
-                  </StackPanel>
-                </DataTemplate>
-              </ItemsControl.ItemTemplate>
-            </ItemsControl>
-          </StackPanel>
-        </ScrollViewer>
-
-        <StackPanel Grid.Row="1">
-          <Button Command="{Binding OnNewsClicked}" Height="100" Background="{Binding WidgetColor.NewsColor}" BorderThickness="0">
-            <ScrollViewer VerticalScrollBarVisibility="Hidden">
-              <StackPanel>
-                <TextBlock Text="{Binding NewsModel.LatestTitle}" Classes="LongRead" Width="390"/>
-                <TextBlock Text="{Binding NewsModel.LatestDescription}" Classes="LongRead" Width="390"/>
-              </StackPanel>
-            </ScrollViewer>
-          </Button>
-        </StackPanel>
-
-        <StackPanel Grid.Row="2">
-          <Button Command="{Binding OnEngWordClicked}" Height="100" Background="{Binding WidgetColor.EngWordColor}" BorderThickness="0">
-            <ScrollViewer VerticalScrollBarVisibility="Hidden">
-              <StackPanel>
-                <StackPanel Orientation="Horizontal">
-                  <TextBlock Text="{Binding EngTranslatedWordModel.Status}" Classes="LongRead"/>
-                  <TextBlock Text="{Binding EngTranslatedWordModel.word}" Classes="LongRead" Foreground="#007ACC"/>
-                  <TextBlock Text="{Binding EngTranslatedWordModel.definitions[0].partOfSpeech}" Classes="LongRead"
-                             Foreground="#9E97B8" Margin="7,0,0,0"/>
+                <StackPanel Grid.Row="0" Background="{Binding WidgetColor.TimeColor}">
+                    <TextBlock Text="{Binding DateTimeModel.Time}" Classes="Time" HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding DateTimeModel.Date}" HorizontalAlignment="Center" />
                 </StackPanel>
-                <TextBlock Text="{Binding EngTranslatedWordModel.definitions[0].text}" Classes="LongRead" Width="400"/>
-              </StackPanel>
-            </ScrollViewer>
-          </Button>
+
+                <StackPanel Grid.Row="1" Background="{Binding WidgetColor.WeatherColor}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5,10,0,0">
+                            <TextBlock Text="{Binding WeatherModel.Status}" Margin="10,0,0,0" />
+                            <TextBlock Text="{Binding WeatherModel.Fact.Temp}" Margin="10,0,0,0" />
+                            <TextBlock Text="{Binding WeatherModel.Fact.Feels_like}" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding WeatherModel.Fact.Condition}" Margin="15,10,0,0"/>
+
+                        <Grid ColumnDefinitions="200,220,220" RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                              Margin="15,25,0,0">
+
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[0].Part_name}" Grid.Row="0"
+                                       Grid.Column="1" />
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[1].Part_name}" Grid.Row="0"
+                                       Grid.Column="2" />
+
+                            <TextBlock Text="Температура" Grid.Row="1" Grid.Column="0" Margin="0,10,0,0" />
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[0].Temp_str}"
+                                       Margin="0,10,0,0" Grid.Row="1" Grid.Column="1" />
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[1].Temp_str}"
+                                       Margin="0,10,0,0" Grid.Row="1" Grid.Column="2" />
+
+                            <TextBlock Text="Ощущается как" Grid.Row="2" Grid.Column="0" Margin="0,10,0,0" />
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[0].Feels_like}"
+                                       Margin="0,10,0,0" Grid.Row="2" Grid.Column="1" />
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[1].Feels_like}"
+                                       Margin="0,10,0,0" Grid.Row="2" Grid.Column="2" />
+
+                            <TextBlock Text="Давление" Grid.Row="3" Grid.Column="0" Margin="0,10,0,0" />
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[0].Pressure_mm}"
+                                       Margin="0,10,0,0" Grid.Row="3" Grid.Column="1" />
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[1].Pressure_mm}"
+                                       Margin="0,10,0,0" Grid.Row="3" Grid.Column="2" />
+
+                            <TextBlock Text="Состояние" Grid.Row="4" Grid.Column="0" Margin="0,10,0,0" />
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[0].Condition}"
+                                       TextWrapping="WrapWithOverflow" Margin="0,10,0,0" Grid.Row="4" Grid.Column="1" />
+                            <TextBlock Text="{Binding WeatherModel.Forecast.Parts[1].Condition}"
+                                       TextWrapping="WrapWithOverflow" Margin="0,10,0,0" Grid.Row="4" Grid.Column="2" />
+                        </Grid>
+                    </StackPanel>
+
+                </StackPanel>
+
+                <StackPanel Grid.Row="2" Background="{Binding WidgetColor.TimerColor}">
+                    <StackPanel Orientation="Horizontal" Margin="200,50,0,0">
+                        <TextBox Text="{Binding TimerModel.Hours}" Width="40" x:Name="HoursField" Classes="Timer">
+                            <i:Interaction.Behaviors>
+                                <ia:EventTriggerBehavior EventName="PointerWheelChanged"
+                                                         SourceObject="{Binding #HoursField}">
+                                    <ia:CallMethodAction TargetObject="{Binding}" MethodName="HoursScroll" />
+                                </ia:EventTriggerBehavior>
+                            </i:Interaction.Behaviors>
+                        </TextBox>
+                        <TextBlock Text=" ч " VerticalAlignment="Bottom" FontSize="25" />
+
+                        <TextBox Text="{Binding TimerModel.Minutes}" Width="40" x:Name="MinutesField" Classes="Timer">
+                            <i:Interaction.Behaviors>
+                                <ia:EventTriggerBehavior EventName="PointerWheelChanged"
+                                                         SourceObject="{Binding #MinutesField}">
+                                    <ia:CallMethodAction TargetObject="{Binding}" MethodName="MinutesScroll" />
+                                </ia:EventTriggerBehavior>
+                            </i:Interaction.Behaviors>
+                        </TextBox>
+                        <TextBlock Text=" мин " VerticalAlignment="Bottom" FontSize="25" />
+
+                        <TextBox Text="{Binding TimerModel.Seconds}" Width="40" x:Name="SecondsField" Classes="Timer">
+                            <i:Interaction.Behaviors>
+                                <ia:EventTriggerBehavior EventName="PointerWheelChanged"
+                                                         SourceObject="{Binding #SecondsField}">
+                                    <ia:CallMethodAction TargetObject="{Binding}" MethodName="SecondsScroll" />
+                                </ia:EventTriggerBehavior>
+                            </i:Interaction.Behaviors>
+                        </TextBox>
+                        <TextBlock Text=" с" VerticalAlignment="Bottom" FontSize="25" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button Content="Отмена" Margin="0,20,0,0" Width="100" Background="#1E1E1E"
+                                IsEnabled="{Binding ButtonStatModel.IsTimerStarted}" Command="{Binding OnCancelButton}"
+                                Classes="StartCancel" />
+                        <Button Margin="20,20,0,0" Classes="StartCancel"
+                                Width="100" Background="{Binding ButtonStatModel.ButtonColor}"
+                                Command="{Binding OnStartButton}" x:Name="StartButton">
+                            <TextBlock Text="{Binding ButtonStatModel.Text}"
+                                       Foreground="{Binding ButtonStatModel.TextColor}" />
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
         </StackPanel>
-      </Grid>
-    </StackPanel>
-  </Grid>
+
+        <StackPanel Grid.Column="1">
+            <Grid RowDefinitions="350, 250, 200">
+                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+
+                    <StackPanel Grid.Row="0" Background="{Binding WidgetColor.TodoListColor}" Width="640">
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <TextBlock Text="{Binding ToDoListModel.Status}" HorizontalAlignment="Center"
+                                       FontSize="25" Width="550" Margin="15,0,0,0" />
+                            <Button Content="X" Width="40" Background="#3f0000" Height="38"
+                                    Command="{Binding OnClose}"
+                                    Classes="StartCancel"
+                                    Margin="10,0,0,0" />
+                        </StackPanel>
+                        <ItemsControl Items="{Binding ToDoListModel.toDoListItems}" Margin="0,10,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <Separator Classes="Main" />
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                            <CheckBox Margin="20,7,0,0" IsChecked="{Binding IsChecked}" />
+                                            <TextBlock Text="{Binding name}" Classes="ToDoList" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <StackPanel Grid.Row="1">
+                    <Button Command="{Binding OnNewsClicked}" Height="250" Background="{Binding WidgetColor.NewsColor}"
+                            BorderThickness="0">
+                        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                            <StackPanel>
+                                <TextBlock Text="{Binding NewsModel.LatestTitle}" Classes="LongRead" Width="640" />
+                                <TextBlock Text="{Binding NewsModel.LatestDescription}" Classes="LongRead" Width="640" />
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel Grid.Row="2">
+                    <Button Command="{Binding OnEngWordClicked}" Height="200"
+                            Background="{Binding WidgetColor.EngWordColor}" BorderThickness="0">
+                        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding EngTranslatedWordModel.Status}" Classes="LongRead" />
+                                    <TextBlock Text="{Binding EngTranslatedWordModel.word}" Classes="LongRead"
+                                               Foreground="#007ACC" />
+                                    <TextBlock Text="{Binding EngTranslatedWordModel.definitions[0].partOfSpeech}"
+                                               Classes="LongRead"
+                                               Foreground="#9E97B8" Margin="7,0,0,0" />
+                                </StackPanel>
+                                <TextBlock Text="{Binding EngTranslatedWordModel.definitions[0].text}"
+                                           Classes="LongRead" Width="640" />
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </Grid>
 </Window>

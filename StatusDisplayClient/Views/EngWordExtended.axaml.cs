@@ -6,20 +6,17 @@ using StatusDisplayClient.ViewModels;
 
 namespace StatusDisplayClient.Views
 {
-    public class WeatherExtended : Window
+    public class EngWordExtended : Window
     {
-        public WeatherExtended()
+        public EngWordExtended()
         {
-
+            this.InitializeComponent();
         }
 
-        public WeatherExtended(WeatherModel model)
+        public EngWordExtended(EngTranslatedWordModel model)
         {
-            DataContext = new WeatherExtendedViewModel(model, this);
+            DataContext = new EngWordExtendedViewModel(model, this);
             this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
         }
 
         private void InitializeComponent()

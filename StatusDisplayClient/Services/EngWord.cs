@@ -1,28 +1,23 @@
 ﻿using Newtonsoft.Json;
 using StatusDisplayClient.Models;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Text;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace StatusDisplayClient.Services
 {
     static class EngWord
     {
-        public static EngTranslatedWordModel GetEngWord()
+        public static async Task<EngTranslatedWordModel> GetEngWord()
         {
-            WebRequest request = WebRequest.Create("https://localhost:5001/api/Data/GetEngWord");
-            WebResponse response = request.GetResponse();
-            EngTranslatedWordModel result;
-            using (Stream dataStream = response.GetResponseStream())
+            var client = new HttpClient
             {
-                StreamReader reader = new StreamReader(dataStream);
-                string json = reader.ReadToEnd();
-                result = JsonConvert.DeserializeObject<EngTranslatedWordModel>(json);
-            }
-            response.Close();
-            return result;
+                BaseAddress = new Uri("http://localhost:5000/api/")
+            };
+
+            var response = await client.GetAsync("Data/GetEngWord");
+
+           return JsonConvert.DeserializeObject<EngTranslatedWordModel>(await response.Content.ReadAsStringAsync());
         }
     }
 }

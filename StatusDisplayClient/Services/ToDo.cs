@@ -2,26 +2,25 @@
 using StatusDisplayClient.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Text;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace StatusDisplayClient.Services
 {
     static class ToDo
     {
-        static public List<ToDoListItem> GetToDoList(List<ToDoListItem> currentModel)
+        public static async Task<List<ToDoListItem>> GetToDoList(List<ToDoListItem> currentModel)
         {
-            WebRequest request = WebRequest.Create("https://localhost:5001/api/Data/GetToDoList");
-            WebResponse response = request.GetResponse();
-            List<ToDoListItem> result;
-            using (Stream dataStream = response.GetResponseStream())
+            var client = new HttpClient
             {
-                StreamReader reader = new StreamReader(dataStream);
-                string json = reader.ReadToEnd();
-                result = JsonConvert.DeserializeObject<List<ToDoListItem>>(json);
-            }
-            response.Close();
+                BaseAddress = new Uri("http://localhost:5000/api/")
+            };
+
+            var response = await client.GetAsync("Data/GetToDoList");
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            var result = JsonConvert.DeserializeObject<List<ToDoListItem>>(json);
 
             // Cycle for set checkboxes
             foreach (var item in result)

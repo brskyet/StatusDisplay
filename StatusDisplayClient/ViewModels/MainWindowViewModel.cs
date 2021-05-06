@@ -1,21 +1,15 @@
-﻿using Avalonia.Controls;
-using Avalonia.Media;
+﻿using Avalonia.Media;
 using Avalonia.Threading;
-using Avalonia.ReactiveUI;
 using StatusDisplayClient.Models;
 using StatusDisplayClient.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
-using System.IO;
 using StatusDisplayClient.Views;
+using Forecast = StatusDisplayClient.Services.Forecast;
 
 namespace StatusDisplayClient.ViewModels
 {
@@ -149,14 +143,18 @@ namespace StatusDisplayClient.ViewModels
         private readonly DispatcherTimer timerForecast, timerToDo, timerTime, timerTimer, timerFlash, timerEngWord, timerNews;
 
         public event PropertyChangedEventHandler PropertyChanged;
+        
+        private MainWindow MainWindow { get; }
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(MainWindow mainWindow)
         {
+            this.MainWindow = mainWindow;
+            
             // set default values
             WeatherModel = new WeatherModel
             {
                 Status = "Weather forecast is loading...",
-                Facts = new Facts
+                Fact = new Fact
                 {
                     Temp = "Loading...",
                     Feels_like = "Loading...",
@@ -174,8 +172,8 @@ namespace StatusDisplayClient.ViewModels
 
             TimerModel = new TimerModel
             {
-                Hours = 0,
-                Minutes = 0,
+                Hours = 1,
+                Minutes = 30,
                 Seconds = 0
             };
 
@@ -339,51 +337,33 @@ namespace StatusDisplayClient.ViewModels
             {
                 var model = await Task.Run(Forecast.GetForecast);
                 // minor edits for beauty
-                model.Facts.Temp += "°";
-                model.Facts.Feels_like += "°";
-                model.Facts.UvIndex += model.Facts.UvIndex switch
+                model.Fact.Condition = $"{model.Fact.Condition}";
+                model.Fact.Temp += "°";
+                model.Fact.Feels_like = $" ({model.Fact.Feels_like}°)";
+                
+                foreach(var p in model.Forecast.Parts)
                 {
-                    string uv when (int.Parse(uv) < 3) => ", низкий",
-                    string uv when (int.Parse(uv) < 6) => ", средний",
-                    string uv when (int.Parse(uv) < 8) => ", высокий",
-                    string uv when (int.Parse(uv) < 11) => ", опасный",
-                    string uv when (int.Parse(uv) < 20) => ", сиди дома",
-                    _ => "не определен",
-                };
-                foreach(var f in model.Forecasts)
-                {
-                    f.UvIndex += f.UvIndex switch
-                    {
-                        string uv when (int.Parse(uv) < 3) => ", низкий",
-                        string uv when (int.Parse(uv) < 6) => ", средний",
-                        string uv when (int.Parse(uv) < 8) => ", высокий",
-                        string uv when (int.Parse(uv) < 11) => ", опасный",
-                        string uv when (int.Parse(uv) < 20) => ", сиди дома",
-                        _ => "не определен",
-                    };
-                    foreach(var p in f.Parts)
-                    {
-                        if (int.Parse(p.Temp_min) > 0)
-                            p.Temp_min = "+" + p.Temp_min + "°";
-                        else
-                            p.Temp_min += "°";
-                        if (int.Parse(p.Temp_max) > 0)
-                            p.Temp_max = "+" + p.Temp_max + "°";
-                        else
-                            p.Temp_max += "°";
-                        p.Temp_str = p.Temp_min + "..." + p.Temp_max;
+                    if (int.Parse(p.Temp_min) > 0)
+                        p.Temp_min = "+" + p.Temp_min + "°";
+                    else
+                        p.Temp_min += "°";
+                    if (int.Parse(p.Temp_max) > 0)
+                        p.Temp_max = "+" + p.Temp_max + "°";
+                    else
+                        p.Temp_max += "°";
+                    p.Temp_str = p.Temp_min + "..." + p.Temp_max;
 
-                        p.Prec_prob += "%";
-                        p.Humidity += "%";
+                    p.Prec_prob += "%";
+                    p.Humidity += "%";
 
-                        if (int.Parse(p.Feels_like) > 0)
-                            p.Feels_like = "+" + p.Feels_like + "°";
-                        else
-                            p.Feels_like += "°";
-                    }
+                    if (int.Parse(p.Feels_like) > 0)
+                        p.Feels_like = "+" + p.Feels_like + "°";
+                    else
+                        p.Feels_like += "°";
+                    p.Pressure_mm += " мм рт.ст.";
                 }
-                model.Facts.Pressure_mm += " мм рт.ст.";
-                model.Facts.Humidity += "%";
+                model.Fact.Pressure_mm += " мм рт.ст.";
+                model.Fact.Humidity += "%";
                 WeatherModel = model;
             }
             catch
@@ -391,8 +371,8 @@ namespace StatusDisplayClient.ViewModels
                 var model = new WeatherModel
                 {
                     Status = "Weather forecast: an error was occurred",
-                    Facts = WeatherModel.Facts,
-                    Forecasts = WeatherModel.Forecasts
+                    Fact = WeatherModel.Fact,
+                    Forecast = WeatherModel.Forecast
                 };
                 WeatherModel = model;
             }
@@ -418,7 +398,7 @@ namespace StatusDisplayClient.ViewModels
             try
             {
                 DateTime datetime = DateTime.Now;
-                var model = new DateTimeModel { Date = datetime.ToString("dddd", new CultureInfo("ru-RU")) + ", " + datetime.ToLongDateString(), Time = datetime.ToShortTimeString() };
+                var model = new DateTimeModel { Date = datetime.ToString("dddd, dd MMMM yyyy", new CultureInfo("ru-RU")), Time = datetime.ToString("HH:mm", new CultureInfo("ru-RU")) };
                 DateTimeModel = model;
             }
             catch
@@ -468,6 +448,11 @@ namespace StatusDisplayClient.ViewModels
             {
                 TimerModel = new TimerModel { Hours = TimerModel.Hours, Minutes = TimerModel.Minutes, Seconds = TimerModel.Seconds -= 1 };
             }
+        }
+
+        public void OnClose()
+        {
+            this.MainWindow.Close();
         }
 
         public void OnStartButton()
@@ -521,8 +506,7 @@ namespace StatusDisplayClient.ViewModels
 
         public void OnWeatherClicked()
         {
-            WeatherExtended window = new WeatherExtended(WeatherModel);
-            window.Show();
+            
         }
 
         private void OnTimedEventFlash(object sender, EventArgs e)

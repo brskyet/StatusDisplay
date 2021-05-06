@@ -4,25 +4,23 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Text;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace StatusDisplayClient.Services
 {
     static class News
     {
-        public static NewsModel GetNews()
+        public static async Task<NewsModel> GetNews()
         {
-            WebRequest request = WebRequest.Create("https://localhost:5001/api/Data/GetNews");
-            WebResponse response = request.GetResponse();
-            NewsModel result;
-            using (Stream dataStream = response.GetResponseStream())
+            var client = new HttpClient
             {
-                StreamReader reader = new StreamReader(dataStream);
-                string json = reader.ReadToEnd();
-                result = JsonConvert.DeserializeObject<NewsModel>(json);
-            }
-            response.Close();
-            return result;
+                BaseAddress = new Uri("http://localhost:5000/api/")
+            };
+
+            var response = await client.GetAsync("Data/GetNews");
+
+            return JsonConvert.DeserializeObject<NewsModel>(await response.Content.ReadAsStringAsync());
         }
     }
 }

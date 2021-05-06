@@ -4,8 +4,8 @@ using StatusDisplayApi.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace StatusDisplayApi.Services
@@ -21,7 +21,7 @@ namespace StatusDisplayApi.Services
             config_json = JsonConvert.DeserializeObject<ConfigJson>(config);
         }
 
-        public List<ToDoListModel> GetToDoList()
+        public async Task<List<ToDoListModel>> GetToDoList()
         {
             var request = WebRequest.Create(
                 $"https://api.trello.com/1/lists/{config_json.trello_list_id}/cards?" +

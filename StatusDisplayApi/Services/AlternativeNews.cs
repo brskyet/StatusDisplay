@@ -2,9 +2,8 @@
 using StatusDisplayApi.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -12,33 +11,31 @@ namespace StatusDisplayApi.Services
 {
     public class AlternativeNews : INews
     {
-        public NewsModel GetNews()
+        public async Task<NewsModel> GetNews()
         {
-            string indexURL = "http://static.feed.rbc.ru/rbc/logical/footer/news.rss";
-            string gamesURL = "https://dtf.ru/rss/all";
-            return new NewsModel() { Index = GetCategory(indexURL), Games = GetCategory(gamesURL) };
+            var indexURL = "http://static.feed.rbc.ru/";
+            return new NewsModel {Index = await GetCategoryAsync(indexURL)};
         }
 
-        private List<SingleNews> GetCategory(string url)
+        private async Task<List<SingleNews>> GetCategoryAsync(string url)
         {
-            WebRequest request = WebRequest.Create(url);
-            WebResponse response = request.GetResponse();
-            string result;
-            using (Stream dataStream = response.GetResponseStream())
+            var client = new HttpClient
             {
-                StreamReader reader = new StreamReader(dataStream);
-                result = reader.ReadToEnd();
-            }
+                BaseAddress = new Uri(url)
+            };
 
-            XDocument doc = XDocument.Parse(result);
+            var result = await client.GetAsync("rbc/logical/footer/news.rss");
+            var xml = await result.Content.ReadAsStringAsync();
+
+            var doc = XDocument.Parse(xml);
+
             var channel = doc.Descendants("channel").ToList();
 
             var news = channel.Descendants("item").Select(r => new SingleNews()
             {
-                Title = r.Element("title").Value,
-                Description = r.Element("description").Value,
-                Time = DateTime.Parse(r.Element("pubDate").Value.Replace(" +0300", ""))
-
+                Title = r.Element("title")?.Value,
+                Description = r.Element("description")?.Value,
+                Time = DateTime.Parse(r.Element("pubDate")?.Value)
             }).ToList();
 
             return news.OrderByDescending(n => n.Time).ToList();

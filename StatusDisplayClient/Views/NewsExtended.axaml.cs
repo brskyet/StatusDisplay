@@ -6,20 +6,16 @@ using StatusDisplayClient.ViewModels;
 
 namespace StatusDisplayClient.Views
 {
-    public class EngWordExtended : Window
+    public class NewsExtended : Window
     {
-        public EngWordExtended()
+        public NewsExtended()
         {
-
-        }
-
-        public EngWordExtended(EngTranslatedWordModel model)
-        {
-            DataContext = new EngWordExtendedViewModel(model, this);
             this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
+        }
+        public NewsExtended(NewsModel model)
+        {
+            DataContext = new NewsExtendedViewModel(model, this);
+            this.InitializeComponent();
         }
 
         private void InitializeComponent()
