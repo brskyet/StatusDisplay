@@ -15,6 +15,20 @@ namespace StatusDisplayClient.ViewModels
 {
     class MainWindowViewModel : INotifyPropertyChanged
     {
+        private bool _isRepeatChecked;
+        public bool IsRepeatChecked
+        {
+            get => _isRepeatChecked;
+            set
+            {
+                if (value != _isRepeatChecked)
+                {
+                    _isRepeatChecked = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        
         private WeatherModel weatherModel;
         public WeatherModel WeatherModel
         {
@@ -290,7 +304,7 @@ namespace StatusDisplayClient.ViewModels
 
         private async void OnTimedEvent5AM(object sender = null, EventArgs e = null)
         {
-            if (sender == null || DateTime.Now.ToLongTimeString() == "5:00:00") // call from ctor or if now is 5 AM
+            if (sender == null || DateTime.Now.ToString("HH:mm:ss", new CultureInfo("ru-RU")) == "5:00:00") // call from ctor or if now is 5 AM
             {
                 //section for To-do list
                 var todomodel = ToDoListModel;
@@ -537,6 +551,10 @@ namespace StatusDisplayClient.ViewModels
             {
                 displayFlash = 0;
                 timerFlash.Stop();
+                if (IsRepeatChecked)
+                {
+                    OnStartButton();
+                }
             }
         }
     }

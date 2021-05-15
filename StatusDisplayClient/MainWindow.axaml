@@ -41,8 +41,9 @@
         <Style Selector="TextBox.Timer">
             <Setter Property="Background" Value="{Binding WidgetColor.TimerColor}" />
             <Setter Property="Foreground" Value="#E0E0E0" />
-            <Setter Property="Padding" Value="10,5,0,0" />
+            <Setter Property="Padding" Value="5,5,0,0" />
             <Setter Property="FontSize" Value="25" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
         <Style Selector="Border.Main">
             <Setter Property="BorderBrush" Value="#797A95" />
@@ -113,6 +114,8 @@
 
                 <StackPanel Grid.Row="2" Background="{Binding WidgetColor.TimerColor}">
                     <StackPanel Orientation="Horizontal" Margin="200,50,0,0">
+                        <CheckBox Margin="-180,0,0,0" IsChecked="{Binding IsRepeatChecked}" />
+                        <TextBlock Margin="-150,5,0,0">Повторять</TextBlock>
                         <TextBox Text="{Binding TimerModel.Hours}" Width="40" x:Name="HoursField" Classes="Timer">
                             <i:Interaction.Behaviors>
                                 <ia:EventTriggerBehavior EventName="PointerWheelChanged"
