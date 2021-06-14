@@ -256,7 +256,7 @@ namespace StatusDisplayClient.ViewModels
 
             timerEngWord = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(500)
+                Interval = TimeSpan.FromMilliseconds(700)
             };
             timerEngWord.Tick += OnTimedEvent5AM;
             timerEngWord.Start();
@@ -304,7 +304,7 @@ namespace StatusDisplayClient.ViewModels
 
         private async void OnTimedEvent5AM(object sender = null, EventArgs e = null)
         {
-            if (sender == null || DateTime.Now.ToString("HH:mm:ss", new CultureInfo("ru-RU")) == "5:00:00") // call from ctor or if now is 5 AM
+            if (sender == null || (int)DateTime.Now.TimeOfDay.TotalSeconds == 18000) // call from ctor or if now is 5 AM
             {
                 //section for To-do list
                 var todomodel = ToDoListModel;
